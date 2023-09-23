@@ -12,7 +12,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={raleway.className}>
         <Providers>
           <NavBar />
-          {children}
+          <main>{children}</main>
         </Providers>
       </body>
     </html>

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 
 import Body from "./components/Body";
 import { authOptions } from "./api/auth/[...nextauth]/route";
+import Title from "./components/Title";
 
 export const metadata: Metadata = {
   title: "CSS Challenges",
@@ -36,6 +37,7 @@ export default async function Home() {
   // TODO - handle adding snippets into the add task form
   return (
     <>
+      <Title />
       <Body topics={topics} />
     </>
   );

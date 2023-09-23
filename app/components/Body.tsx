@@ -1,21 +1,17 @@
 "use client";
 
+import { Grid } from "@chakra-ui/react";
 import Section from "./Section";
-import styles from "./Body.module.scss";
+import Title from "./Title";
 
 export default function Body({ topics }: { topics: Topic[] }) {
   return (
-    <main className={styles.main}>
-      <h1>
-        Learn HTML and CSS <br></br>by <span>practicing</span>
-      </h1>
-      <p>Choose a topic you want to practice, or go ahead and do all challenges from start to finish</p>
-
-      <div className={styles.grid}>
+    <>
+      <Grid templateColumns={"repeat(4, minmax(0, 1fr))"} gap={"1rem"}>
         {topics.map((topic) => (
           <Section key={topic.slug} {...topic} />
         ))}
-      </div>
-    </main>
+      </Grid>
+    </>
   );
 }

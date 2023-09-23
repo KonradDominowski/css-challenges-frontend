@@ -15,6 +15,17 @@ nav {
   background-color: rgb(245, 245, 245);
 }
 
+main {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
 .cm-focused {
   outline: none !important;
 }
