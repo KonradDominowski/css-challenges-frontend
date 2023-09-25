@@ -41,3 +41,8 @@ interface Providers {
   github: string;
   google: string;
 }
+
+interface Link {
+  name: string;
+  href: string;
+}

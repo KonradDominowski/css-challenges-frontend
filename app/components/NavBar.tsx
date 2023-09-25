@@ -9,6 +9,17 @@ import styles from "./NavBar.module.scss";
 import alogo from "../../media/alogo.svg";
 import { SignInButton, SignOutButton } from "./Buttons";
 
+const links: Link[] = [
+  {
+    name: "Home",
+    href: "/",
+  },
+  {
+    name: "Add new task",
+    href: "/create",
+  },
+];
+
 export default function NavBar() {
   const { status } = useSession();
 
@@ -37,60 +48,27 @@ export default function NavBar() {
       height={"4rem"}
       fontWeight={700}
       sx={navBorder}
+      px={2}
     >
       <HStack>
         <Link href={"/"}>
           <Image className={styles.logo} src={alogo} alt="logo" />
         </Link>
         <HStack align={"center"} paddingLeft={"1rem"} fontSize={"medium"} spacing={2}>
-          <Box
-            as={"a"}
-            p={2}
-            href="/"
-            transition={"0.1s"}
-            color={linkColor}
-            _hover={{
-              color: linkColorHover,
-            }}
-          >
-            Home
-          </Box>
-          <Box
-            as={"a"}
-            p={2}
-            href="#"
-            transition={"0.1s"}
-            color={linkColor}
-            _hover={{
-              color: linkColorHover,
-            }}
-          >
-            Link 1
-          </Box>
-          <Box
-            as={"a"}
-            p={2}
-            href="#"
-            transition={"0.1s"}
-            color={linkColor}
-            _hover={{
-              color: linkColorHover,
-            }}
-          >
-            Link 1
-          </Box>
-          <Box
-            as={"a"}
-            p={2}
-            href="/create"
-            transition={"0.1s"}
-            color={linkColor}
-            _hover={{
-              color: linkColorHover,
-            }}
-          >
-            Add new task
-          </Box>
+          {links.map((link) => (
+            <Box
+              as={"a"}
+              p={2}
+              href={link.href}
+              transition={"0.1s"}
+              color={linkColor}
+              _hover={{
+                color: linkColorHover,
+              }}
+            >
+              {link.name}
+            </Box>
+          ))}
         </HStack>
       </HStack>
 

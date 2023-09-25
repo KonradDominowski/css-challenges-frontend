@@ -1,18 +1,16 @@
 "use client";
-
-import { Avatar, Button, Icon } from "@chakra-ui/react";
-import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
-import { HiCheck } from "react-icons/hi";
 
-import customSignOut from "@/functions/customSignOut";
+import { Avatar, Button, Icon, Spinner } from "@chakra-ui/react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { HiCheck } from "react-icons/hi";
 
 export function SignInButton() {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return <>...</>;
+    return <Spinner size={"sm"} />;
   }
 
   if (status === "authenticated") {
