@@ -1,7 +1,7 @@
 "use client";
 
 import { Grid } from "@chakra-ui/react";
-import SectionSkeleton from "./components/SectionSkeleton";
+import SectionSkeleton from "./components/Skeletons/SectionSkeleton";
 import Title from "./components/Title";
 
 // TODO - currently this loading screen is applied to all pages even in subroutes - need to fix that

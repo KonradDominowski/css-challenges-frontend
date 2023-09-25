@@ -1,4 +1,4 @@
-import { Image, Skeleton } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
 import Link from "next/link";
 
 import styles from "./Section.module.scss";

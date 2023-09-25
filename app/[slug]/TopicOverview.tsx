@@ -2,7 +2,6 @@
 
 import { Box, Flex, UnorderedList, ListItem, Text, Button } from "@chakra-ui/react";
 import styles from "./page.module.scss";
-import HTML5Logo from "@/media/HTML5Logo.svg";
 import Image from "next/image";
 
 interface Props {
@@ -19,7 +18,7 @@ export default function TopicOverview({ topic, params }: Props) {
   return (
     <Box className={styles.main} maxW={960} m={"auto"} my={10}>
       <Flex justify={"left"} gap={7} align={"center"} mb={5}>
-        <Image src={HTML5Logo} height={150} alt="logo" />
+        <Image src={topic.logo_url} height={150} width={150} style={{ maxHeight: "150px" }} alt="logo" />
         <h1>{topic.title}</h1>
       </Flex>
 

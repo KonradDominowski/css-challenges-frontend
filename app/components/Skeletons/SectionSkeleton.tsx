@@ -1,6 +1,6 @@
 import { Box, Skeleton, SkeletonText } from "@chakra-ui/react";
 
-import styles from "./Section.module.scss";
+import styles from "./../Section.module.scss";
 
 export default function SectionSkeleton() {
   return (

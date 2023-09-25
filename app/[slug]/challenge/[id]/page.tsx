@@ -11,6 +11,7 @@ interface Props {
   };
 }
 
+// TODO - lodaing screen and maybe change layout so that sidebar is seperate
 export default async function ChallengeLayout({ params }: Props) {
   const session = await getServerSession(authOptions);
 

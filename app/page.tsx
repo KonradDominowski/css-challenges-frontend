@@ -29,11 +29,10 @@ export default async function Home() {
     tasksData = await response.json();
   }
 
-  const topicsResponse = await fetch(`${process.env.BACKEND_URL}/api/topics/`);
+  const topicsResponse = await fetch(`${process.env.BACKEND_URL}/api/topics/`, { next: { tags: ["topics"] } });
   const topics = await topicsResponse.json();
 
   // TODO - handle the error cases where the backend is not working
-  // TODO - why the fuck is it a deceptive site - fix it
   // TODO - handle adding snippets into the add task form
   return (
     <>
