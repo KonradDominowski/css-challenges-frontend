@@ -1,7 +1,7 @@
 "use client";
 
-import { Avatar, Button, Checkbox, Icon, Spinner } from "@chakra-ui/react";
-import { useSession, signIn } from "next-auth/react";
+import { Avatar, Button, Icon } from "@chakra-ui/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { HiCheck } from "react-icons/hi";
@@ -27,7 +27,7 @@ export function SignInButton() {
 }
 
 export function SignOutButton() {
-  return <Button onClick={() => customSignOut()}>Sign out</Button>;
+  return <Button onClick={() => signOut()}>Sign out</Button>;
 }
 
 export function SubmitButton({ completed }: { completed: boolean | undefined }) {
