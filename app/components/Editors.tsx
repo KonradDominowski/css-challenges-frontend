@@ -31,6 +31,7 @@ interface JoinedProps {
   setHTMLcode: React.Dispatch<React.SetStateAction<string>>;
   CSScode: string;
   setCSScode: React.Dispatch<React.SetStateAction<string>>;
+  form?: boolean;
 }
 
 const myTheme = createTheme({
@@ -99,7 +100,7 @@ function CSSEditor({ code, setCode }: Props) {
   );
 }
 
-export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode }: JoinedProps) {
+export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode, form }: JoinedProps) {
   const [isSplit, setIsSplit] = useState(false);
 
   const toggleSplit = () => {
@@ -107,7 +108,15 @@ export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode 
   };
 
   return (
-    <Box my={1} px={4} py={2} minHeight={"256px"} bgColor={"#011627"} borderRadius={10} pos={"relative"}>
+    <Box
+      my={1}
+      px={form ? 0 : 4}
+      py={form ? 0 : 2}
+      minHeight={"256px"}
+      bgColor={"#011627"}
+      borderRadius={10}
+      pos={"relative"}
+    >
       <IconButton
         aria-label="Split editors"
         pos={"absolute"}

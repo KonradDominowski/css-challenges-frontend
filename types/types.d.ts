@@ -3,6 +3,8 @@ interface Task {
   title: string;
   description: string;
   target: string;
+  starter_html_code: string | null;
+  starter_css_code: string | null;
   updated?: string;
   order: number;
   chapter: number;

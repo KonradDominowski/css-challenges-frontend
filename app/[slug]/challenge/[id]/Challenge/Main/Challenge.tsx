@@ -13,7 +13,7 @@ import styles from "./Challenge.module.scss";
 
 interface Props {
   topic: Topic;
-  taskData: TaskData | undefined;
+  userTaskData: TaskData | undefined;
   session: Session | null;
   params: {
     slug: string;
@@ -21,13 +21,14 @@ interface Props {
   };
 }
 
-export default function Challenge({ params, topic, taskData }: Props) {
-  const [HTMLcode, setHTMLcode] = useState<string>(taskData?.html_code || "");
-  const [CSScode, setCSScode] = useState<string>(taskData?.css_code || "");
+// TODO -  Definitely need to add prettier to format the code
+export default function Challenge({ params, topic, userTaskData }: Props) {
+  const task = topic.chapters!.flatMap((chapter) => chapter.tasks).find((task) => task.id === +params.id)!;
+
+  const [HTMLcode, setHTMLcode] = useState<string>(userTaskData?.html_code || task.starter_html_code || "");
+  const [CSScode, setCSScode] = useState<string>(userTaskData?.css_code || task.starter_css_code || "");
   const [srcDoc, setSrcDoc] = useState<string>("");
   const [showDesc, setShowDesc] = useState(true);
-
-  const task = topic.chapters!.flatMap((chapter) => chapter.tasks).find((task) => task.id === +params.id)!;
 
   function getNextTaskId(): string | undefined {
     const tasks = topic.chapters?.flatMap((chapter) => chapter.tasks)!;
@@ -81,7 +82,7 @@ export default function Challenge({ params, topic, taskData }: Props) {
               aria-label=""
               icon={<ArrowLeftIcon />}
             />
-            <SubmitButton completed={taskData?.completed} />
+            <SubmitButton completed={userTaskData?.completed} />
             <IconButton
               as={"a"}
               href={getNextTaskId()}
@@ -104,7 +105,7 @@ export default function Challenge({ params, topic, taskData }: Props) {
           <CodeEditor HTMLcode={HTMLcode} setHTMLcode={setHTMLcode} CSScode={CSScode} setCSScode={setCSScode} />
         </div>
       </div>
-      <VisuallyHiddenInput type="number" name="id" readOnly value={taskData?.id} />
+      <VisuallyHiddenInput type="number" name="id" readOnly value={userTaskData?.id} />
       <VisuallyHiddenInput type="number" name="task" readOnly value={params.id} />
       <VisuallyHiddenInput type="text" name="html_code" readOnly value={HTMLcode} />
       <VisuallyHiddenInput type="text" name="css_code" readOnly value={CSScode} />
