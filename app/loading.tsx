@@ -11,8 +11,8 @@ export default function loading() {
       <Title />
 
       <Grid templateColumns={"repeat(4, minmax(0, 1fr))"} gap={"1rem"}>
-        {[1, 1, 1, 1].map(() => (
-          <SectionSkeleton />
+        {[1, 1, 1, 1].map((_, i) => (
+          <SectionSkeleton key={i} />
         ))}
       </Grid>
     </>

@@ -74,7 +74,7 @@ export default function ChallengePage({ params, topic, tasksData, session }: Pro
         <Sidebar topic={topic} tasksData={optimisticTasks} params={params} />
         <Challenge
           topic={topic}
-          taskData={optimisticTasks?.find((el) => +el.task === +params.id)}
+          userTaskData={optimisticTasks?.find((el) => +el.task === +params.id)}
           params={params}
           session={session}
         />

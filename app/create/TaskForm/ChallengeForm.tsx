@@ -78,7 +78,7 @@ export default function ChallengeForm({
     }, 50);
 
     return () => clearTimeout(timeout);
-  }, [HTMLcode, CSScode]);
+  }, [HTMLcode, CSScode, setSrcDoc]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -86,7 +86,7 @@ export default function ChallengeForm({
     }, 50);
 
     return () => clearTimeout(timeout);
-  }, [starterHTMLcode, starterCSScode]);
+  }, [starterHTMLcode, starterCSScode, setStarterSrcDoc]);
 
   return (
     <div className={styles.main} id="main">
