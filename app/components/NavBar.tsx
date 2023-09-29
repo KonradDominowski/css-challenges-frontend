@@ -55,8 +55,9 @@ export default function NavBar() {
           <Image className={styles.logo} src={alogo} alt="logo" />
         </Link>
         <HStack align={"center"} paddingLeft={"1rem"} fontSize={"medium"} spacing={2}>
-          {links.map((link) => (
+          {links.map((link, i) => (
             <Box
+              key={i}
               as={"a"}
               p={2}
               href={link.href}
