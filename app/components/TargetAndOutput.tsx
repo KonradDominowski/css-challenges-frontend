@@ -43,17 +43,6 @@ export default function TargetAndOutput({ target, output }: { target: string; ou
               >
                 <iframe title="target" height={300} sandbox="allow-scripts" width="100%" srcDoc={target} />
               </Box>
-              {/* <Box
-                pos={"absolute"}
-                bgColor={"black"}
-                top={0}
-                left={0}
-                width={"100%"}
-                mixBlendMode={"difference"}
-                display={showDiff ? "block" : "none"}
-              >
-                <iframe title="target" height={300} sandbox="allow-scripts" width="100%" srcDoc={target} />
-              </Box> */}
               <Box>
                 <iframe title="output" height={300} sandbox="allow-scripts" width="100%" srcDoc={output} />
               </Box>

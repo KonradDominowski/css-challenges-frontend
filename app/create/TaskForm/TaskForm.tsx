@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useToast } from "@chakra-ui/react";
 
 import SidebarForm from "@/app/create/TaskForm/SidebarForm";
 import ChallengeForm from "@/app/create/TaskForm/ChallengeForm";
 import createTask from "@/app/create/actions";
-import { useToast } from "@chakra-ui/react";
-import { revalidatePath } from "next/cache";
 
 interface data {
   title: string;
@@ -21,12 +20,15 @@ export default function TaskForm({ topics, chapters }: { topics: Topic[]; chapte
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [srcDoc, setSrcDoc] = useState<string>("");
+  const [starterSrcDoc, setStarterSrcDoc] = useState<string>("");
   const [topicID, setTopicID] = useState(0);
   const [chapterID, setChapterID] = useState(0);
   const [taskOrder, setTaskOrder] = useState(0);
   const [formIsFilled, setFormIsFilled] = useState(false);
   const [HTMLcode, setHTMLcode] = useState<string>("");
   const [CSScode, setCSScode] = useState<string>("");
+  const [starterHTMLcode, setStarterHTMLcode] = useState<string>("");
+  const [starterCSScode, setStarterCSScode] = useState<string>("");
 
   const clearForm = () => {
     setChapterID(0);
@@ -34,6 +36,8 @@ export default function TaskForm({ topics, chapters }: { topics: Topic[]; chapte
     setDescription("");
     setHTMLcode("");
     setCSScode("");
+    setStarterCSScode("");
+    setStarterHTMLcode("");
   };
 
   async function onCreateTask(formData: FormData) {
@@ -94,6 +98,12 @@ export default function TaskForm({ topics, chapters }: { topics: Topic[]; chapte
         setHTMLcode={setHTMLcode}
         CSScode={CSScode}
         setCSScode={setCSScode}
+        starterCSScode={starterCSScode}
+        setStarterCSScode={setStarterCSScode}
+        starterHTMLcode={starterHTMLcode}
+        setStarterHTMLcode={setStarterHTMLcode}
+        starterSrcDoc={starterSrcDoc}
+        setStarterSrcDoc={setStarterSrcDoc}
       />
     </form>
   );
