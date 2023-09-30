@@ -59,7 +59,7 @@ export default function ChallengePage({ params, topic, tasksData, session }: Pro
         toast({
           position: "bottom-left",
           title: "Sign in",
-          description: "Sign in to save data to your account, for now your data is saved locally",
+          description: "Sign in to save to your account",
           status: "info",
           duration: 12000,
           isClosable: true,

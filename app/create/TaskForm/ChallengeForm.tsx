@@ -1,4 +1,6 @@
 "use client";
+import { useEffect } from "react";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 import CodeEditor from "@/app/components/Editors";
 import {
@@ -14,12 +16,11 @@ import {
   TabPanels,
   Tabs,
   Textarea,
+  Tooltip,
   VisuallyHiddenInput,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
 
 import styles from "./ChallengeForm.module.scss";
-import TargetAndOutput from "@/app/components/TargetAndOutput";
 
 interface Props {
   title: string;
@@ -102,16 +103,21 @@ export default function ChallengeForm({
           borderColor={"rgba(0,0,0,0)"}
         />
       </Flex>
-      <Textarea
-        name="description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className={styles.description}
-        p={0}
-        placeholder="Put task description here"
-        resize={"vertical"}
-        borderColor={"rgba(0,0,0,0)"}
-      />
+      <Box pos={"relative"} w={"60%"}>
+        <Textarea
+          name="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className={styles.description}
+          p={0}
+          placeholder="Put task description here"
+          resize={"vertical"}
+          borderColor={"rgba(0,0,0,0)"}
+        />
+        <Tooltip label={"Wrap code fragment with {{ }} to wrap them in a code block"}>
+          <InfoOutlineIcon pos={"absolute"} right={"-1.2rem"} top={"0.3rem"} />
+        </Tooltip>
+      </Box>
       <div>
         <Box resize={"horizontal"} minW={"600px"} maxW={"100%"} overflow={"auto"}>
           <Flex gap={3}>

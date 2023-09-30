@@ -101,7 +101,7 @@ function CSSEditor({ code, setCode }: Props) {
 }
 
 export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode, form }: JoinedProps) {
-  const [isSplit, setIsSplit] = useState(false);
+  const [isSplit, setIsSplit] = useState(true);
 
   const toggleSplit = () => {
     setIsSplit((state) => !state);
