@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Session } from "next-auth";
-import { Box, Flex, IconButton, VisuallyHiddenInput } from "@chakra-ui/react";
+import { Box, Flex, IconButton, VisuallyHiddenInput, Text, Button } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 import CodeEditor from "@/app/components/Editors";
@@ -10,6 +10,7 @@ import TargetAndOutput from "@/app/components/TargetAndOutput";
 import { SubmitButton } from "@/app/components/Buttons";
 
 import styles from "./Challenge.module.scss";
+import { useSession } from "next-auth/react";
 
 interface Props {
   topic: Topic;
@@ -23,6 +24,9 @@ interface Props {
 
 // TODO -  Definitely need to add prettier to format the code
 export default function Challenge({ params, topic, userTaskData }: Props) {
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.email == "konrad.dominowski@gmail.com";
+
   const task = topic.chapters!.flatMap((chapter) => chapter.tasks).find((task) => task.id === +params.id)!;
 
   const [HTMLcode, setHTMLcode] = useState<string>(userTaskData?.html_code || task.starter_html_code || "");
@@ -75,6 +79,12 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
         <Flex alignItems={"center"} justify={"space-between"}>
           <h1>{task!.title}</h1>
           <Flex>
+            {isAdmin && (
+              <Button as={"a"} href={`/edit/${params.id}`}>
+                Edit
+              </Button>
+            )}
+
             <IconButton
               as={"a"}
               href={getPreviousTaskId()}
@@ -92,14 +102,15 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
             />
           </Flex>
         </Flex>
-        <p
+        <Text
           className={showDesc ? `${styles.description}` : `${styles.description} ${styles.hidden}`}
+          py={3}
           onClick={() => setShowDesc((state) => !state)}
           id="description"
           dangerouslySetInnerHTML={{ __html: showDesc ? task!.description : task!.description.slice(0, 60) }}
-        ></p>
+        ></Text>
         <div>
-          <Box minW={"600px"} maxW={"100%"} resize={"horizontal"} overflow={"auto"}>
+          <Box mb={4} minW={"600px"} maxW={"100%"} resize={"horizontal"} overflow={"auto"}>
             <TargetAndOutput target={task!.target} output={srcDoc} />
           </Box>
           <CodeEditor HTMLcode={HTMLcode} setHTMLcode={setHTMLcode} CSScode={CSScode} setCSScode={setCSScode} />

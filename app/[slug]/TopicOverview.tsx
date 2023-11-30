@@ -1,8 +1,9 @@
 "use client";
 
-import { Box, Flex, UnorderedList, ListItem, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, UnorderedList, ListItem, Text, Button, Heading } from "@chakra-ui/react";
 import styles from "./page.module.scss";
 import Image from "next/image";
+import { it } from "node:test";
 
 interface Props {
   topic: Topic;
@@ -15,6 +16,8 @@ export default function TopicOverview({ topic, params }: Props) {
   const tasks = topic.chapters!.flatMap((el) => el.tasks);
   const taskNumber = tasks.length;
 
+  console.log(tasks.at(0));
+
   return (
     <Box className={styles.main} maxW={960} m={"auto"} my={10}>
       <Flex justify={"left"} gap={7} align={"center"} mb={5}>
@@ -22,24 +25,38 @@ export default function TopicOverview({ topic, params }: Props) {
         <h1>{topic.title}</h1>
       </Flex>
 
-      <Box py={4}>
-        <Text>
-          {topic.long_description}. This topic consists of <b>{topic.chapters!.length} chapters </b> totalling to{" "}
-          <b>{taskNumber} tasks</b>.
-        </Text>
-
-        <Text fontSize={"1.5rem"} pt={3} pb={2}>
-          Chapters
-        </Text>
-        <UnorderedList>
-          {topic.chapters!.map((chapter) => (
-            <ListItem key={chapter.id}>{chapter.title}</ListItem>
+      <Flex flexDir={"column"} gap={3}>
+        <div>
+          <h3 style={{ fontWeight: 700 }}>{topic.description?.subtitle}</h3>
+          {topic.description?.body.paragraphs.map((paragraph) => (
+            <Text mt={4}>{paragraph.text}</Text>
           ))}
-        </UnorderedList>
-        <Button as={"a"} href={`${topic.slug}/challenge/${tasks.at(0)?.id}`} my={3} size={"lg"} colorScheme={"green"}>
-          Get Started
-        </Button>
-      </Box>
+        </div>
+        <div>
+          <h3 style={{ fontWeight: 700, marginBottom: "0.5rem" }}>What You'll Learn:</h3>
+          <UnorderedList>
+            {topic.description?.to_learn.items.map((item) => (
+              <ListItem>
+                <strong>{item.main}</strong>: {item.sub}
+              </ListItem>
+            ))}
+          </UnorderedList>
+        </div>
+        <div>
+          <h3 style={{ fontWeight: 700 }}>Challenges:</h3>
+          <p style={{ marginTop: "0.5rem" }}>
+            Test your skills with our interactive challenges! Build web pages and enhance your HTML expertise.
+          </p>
+        </div>
+      </Flex>
+
+      <p>
+        This topic consists of <b>{topic.chapters!.length} chapters </b> totalling to
+        <b> {taskNumber} tasks</b>.
+      </p>
+      <Button as={"a"} href={`${topic.slug}/challenge/${tasks.at(0)?.id}`} my={3} size={"lg"} colorScheme={"green"}>
+        Get Started
+      </Button>
     </Box>
   );
 }

@@ -17,7 +17,7 @@ export default function TargetAndOutput({ target, output }: { target: string; ou
   const [showDiff, setShowDiff] = useState(false);
 
   return (
-    <Flex gap={3} my={3} flexDirection={{ base: "column-reverse", lg: "row" }}>
+    <Flex gap={4} my={3} flexDirection={{ base: "column-reverse", lg: "row" }}>
       <Card px={5} flexGrow={1} pb={5}>
         <Tabs>
           <CardHeader color={"gray"} p={0}>

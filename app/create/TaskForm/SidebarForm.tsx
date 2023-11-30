@@ -125,7 +125,7 @@ export default function SidebarForm({
         ))}
       </Select>
       <Button isDisabled={!formIsFilled || pending} mt={5} w={"100%"} colorScheme={"green"} type="submit">
-        {pending ? <Spinner size={"sm"} /> : "Add Task"}
+        {pending ? <Spinner size={"sm"} /> : "Save"}
       </Button>
     </nav>
   );
