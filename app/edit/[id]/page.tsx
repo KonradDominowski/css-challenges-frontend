@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import TaskEditForm from "./TaskEditForm/TaskEditForm";
+import TaskForm from "@/app/components/TaskForm/TaskForm";
 
 interface Props {
   params: {
@@ -23,5 +23,5 @@ export default async function CreateChallenge({ params }: Props) {
   const taskResponse = await fetch(`${process.env.BACKEND_URL}/api/tasks/${params.id}/`);
   const task: Task = await taskResponse.json();
 
-  return <TaskEditForm topics={topics} chapters={chapters} task={task} />;
+  return <TaskForm topics={topics} chapters={chapters} task={task} />;
 }

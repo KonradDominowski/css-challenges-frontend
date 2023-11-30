@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import TaskForm from "./TaskForm/TaskForm";
+import TaskForm from "../components/TaskForm/TaskForm";
 
 export default async function CreateChallenge() {
   const session = await getServerSession();

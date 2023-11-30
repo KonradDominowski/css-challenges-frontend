@@ -28,15 +28,17 @@ export default function TopicOverview({ topic, params }: Props) {
       <Flex flexDir={"column"} gap={3}>
         <div>
           <h3 style={{ fontWeight: 700 }}>{topic.description?.subtitle}</h3>
-          {topic.description?.body.paragraphs.map((paragraph) => (
-            <Text mt={4}>{paragraph.text}</Text>
+          {topic.description?.body.paragraphs.map((paragraph, i) => (
+            <Text key={i} mt={4}>
+              {paragraph.text}
+            </Text>
           ))}
         </div>
         <div>
           <h3 style={{ fontWeight: 700, marginBottom: "0.5rem" }}>What You'll Learn:</h3>
           <UnorderedList>
-            {topic.description?.to_learn.items.map((item) => (
-              <ListItem>
+            {topic.description?.to_learn.items.map((item, i) => (
+              <ListItem key={i}>
                 <strong>{item.main}</strong>: {item.sub}
               </ListItem>
             ))}
