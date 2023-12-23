@@ -32,7 +32,8 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
   const [HTMLcode, setHTMLcode] = useState<string>(userTaskData?.html_code || task.starter_html_code || "");
   const [CSScode, setCSScode] = useState<string>(userTaskData?.css_code || task.starter_css_code || "");
   const [srcDoc, setSrcDoc] = useState<string>("");
-  const [showDesc, setShowDesc] = useState(true);
+  const [hideDesc, setHideDesc] = useState(false);
+  const [showOutline, setShowOutline] = useState(false);
 
   function getNextTaskId(): string | undefined {
     const tasks = topic.chapters?.flatMap((chapter) => chapter.tasks)!;
@@ -73,6 +74,10 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
     return () => clearTimeout(timeout);
   }, [HTMLcode, CSScode]);
 
+  let classes = styles.description;
+  if (hideDesc) classes += ` ${styles.hidden}`;
+  if (showOutline) classes += ` ${styles.outline}`;
+
   return (
     <>
       <div className={styles.main} id="main">
@@ -103,11 +108,14 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
           </Flex>
         </Flex>
         <Text
-          className={showDesc ? `${styles.description}` : `${styles.description} ${styles.hidden}`}
+          className={classes}
           py={3}
-          onClick={() => setShowDesc((state) => !state)}
+          borderRadius={5}
+          onClick={() => setHideDesc((state) => !state)}
+          onMouseEnter={() => setShowOutline(true)}
+          onMouseLeave={() => setShowOutline(false)}
           id="description"
-          dangerouslySetInnerHTML={{ __html: showDesc ? task!.description : task!.description.slice(0, 60) }}
+          dangerouslySetInnerHTML={{ __html: !hideDesc ? task!.description : task!.description.slice(0, 60) }}
         ></Text>
         <div>
           <Box mb={4} minW={"600px"} maxW={"100%"} resize={"horizontal"} overflow={"auto"}>

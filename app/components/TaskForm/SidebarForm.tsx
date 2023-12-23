@@ -14,6 +14,7 @@ function range(end: number) {
 
 interface Props {
   formIsFilled: boolean;
+  task?: Task;
   topics: Topic[];
   chapters: Chapter[];
   topicID: number;
@@ -26,6 +27,7 @@ interface Props {
 
 export default function SidebarForm({
   formIsFilled,
+  task,
   topics,
   chapters,
   topicID,
@@ -36,13 +38,14 @@ export default function SidebarForm({
   setTaskOrder,
 }: Props) {
   const { pending } = useFormStatus();
-
   const [maxOrder, setMaxOrder] = useState<number>(0);
 
   // If task is taken, disable it in the dropdown list
-  function taskIsTaken(taskNumber: number, chap: number) {
+  function taskIsTaken(taskNumber: number, chap: number, task: Task | undefined) {
+    if (taskNumber === task?.order) return false;
+
     return chapters
-      .find((el) => el.id === chap)
+      .find((chapter) => chapter.id === chap)
       ?.tasks.map((task) => task.order)
       .includes(taskNumber);
   }
@@ -61,7 +64,7 @@ export default function SidebarForm({
       .at(-1);
 
     setMaxOrder(maxOrder!);
-    setTaskOrder(maxOrder! + 1 || 1);
+    setTaskOrder(task?.order || maxOrder! + 1 || 1);
   }, [chapterID, setTaskOrder, setMaxOrder]);
 
   useEffect(() => {
@@ -119,7 +122,8 @@ export default function SidebarForm({
         onChange={(e) => setTaskOrder(+e.target.value)}
       >
         {range(maxOrder + 1).map((el) => (
-          <option key={el} disabled={taskIsTaken(el, chapterID)} value={el}>
+          <option key={el} disabled={taskIsTaken(el, chapterID, task)} value={el}>
+            {/* <option key={el} disabled={el !== taskOrder} value={el}> */}
             {el}
           </option>
         ))}

@@ -25,7 +25,13 @@ function getStyle(html: string): string {
   let styleStart: number = html.search("<style>") + 7;
   let styleEnd: number = html.search("</style>");
 
-  return html.slice(styleStart, styleEnd);
+  return html
+    .slice(styleStart, styleEnd)
+    .replaceAll("              body {                background-color: white              }", "");
+}
+
+function decodeCodeBlocks(text: string): string {
+  return text.replaceAll('<span class="code">', "{{").replaceAll("</span>", "}}");
 }
 
 export default function TaskForm({ topics, chapters, task }: Props) {
@@ -49,14 +55,14 @@ export default function TaskForm({ topics, chapters, task }: Props) {
       const topic = topics.find((topic) => topic.id == chapter?.topic);
 
       setTitle(task.title);
-      setDescription(task.description);
+      setDescription(decodeCodeBlocks(task.description));
       setTopicID(topic?.id!);
       setChapterID(chapter?.id!);
       setTaskOrder(task.order);
       setHTMLcode(getBody(task.target));
       setCSScode(getStyle(task.target));
-      setStarterHTMLcode(starterHTMLcode);
-      setStarterCSScode(starterCSScode);
+      setStarterHTMLcode(task.starter_html_code || "");
+      setStarterCSScode(task.starter_css_code || "");
     }
   }, []);
 
@@ -114,6 +120,7 @@ export default function TaskForm({ topics, chapters, task }: Props) {
     <form action={onCreateTask}>
       <SidebarForm
         formIsFilled={formIsFilled}
+        task={task}
         topics={topics}
         chapters={chapters}
         topicID={topicID}

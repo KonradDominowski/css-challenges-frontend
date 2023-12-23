@@ -2,23 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 
-const formatDescription = (text: string) => {
-  const words = text.split(" ");
-  let formattedWords = words.map((word) => {
-    if (word.startsWith("{{") && word.endsWith("}}")) {
-      return word.replace("{{", '<span class="code">').replace("}}", "</span>");
-    } else {
-      return word;
-    }
-  });
-
-  return formattedWords.join(" ");
+const formatWithCodeblocks = (text: string) => {
+  return text.replaceAll("{{", '<span class="code">').replaceAll("}}", "</span>");
 };
 
 export default async function createTask(formData: FormData, options: { taskID?: number }) {
   const { taskID } = options;
   const data = Object.fromEntries(formData);
-  data.description = formatDescription(data.description as string);
+  data.description = formatWithCodeblocks(data.description as string);
 
   let url: string, method: string;
 

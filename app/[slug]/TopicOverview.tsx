@@ -16,8 +16,6 @@ export default function TopicOverview({ topic, params }: Props) {
   const tasks = topic.chapters!.flatMap((el) => el.tasks);
   const taskNumber = tasks.length;
 
-  console.log(tasks.at(0));
-
   return (
     <Box className={styles.main} maxW={960} m={"auto"} my={10}>
       <Flex justify={"left"} gap={7} align={"center"} mb={5}>
