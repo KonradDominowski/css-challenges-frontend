@@ -1,15 +1,12 @@
 "use server";
 
+import { encodeWithCodeblocks } from "@/functions/editingCode";
 import { revalidatePath } from "next/cache";
-
-const formatWithCodeblocks = (text: string) => {
-  return text.replaceAll("{{", '<span class="code">').replaceAll("}}", "</span>");
-};
 
 export default async function createTask(formData: FormData, options: { taskID?: number }) {
   const { taskID } = options;
   const data = Object.fromEntries(formData);
-  data.description = formatWithCodeblocks(data.description as string);
+  data.description = encodeWithCodeblocks(data.description as string);
 
   let url: string, method: string;
 

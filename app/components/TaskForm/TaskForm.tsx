@@ -7,6 +7,7 @@ import SidebarForm from "@/app/components/TaskForm/SidebarForm";
 import ChallengeForm from "@/app/components/TaskForm/ChallengeForm";
 import createTask from "@/app/create/actions";
 import { redirect } from "next/navigation";
+import { decodeCodeBlocks } from "@/functions/editingCode";
 
 interface Props {
   topics: Topic[];
@@ -28,10 +29,6 @@ function getStyle(html: string): string {
   return html
     .slice(styleStart, styleEnd)
     .replaceAll("              body {                background-color: white              }", "");
-}
-
-function decodeCodeBlocks(text: string): string {
-  return text.replaceAll('<span class="code">', "{{").replaceAll("</span>", "}}");
 }
 
 export default function TaskForm({ topics, chapters, task }: Props) {
@@ -64,7 +61,7 @@ export default function TaskForm({ topics, chapters, task }: Props) {
       setStarterHTMLcode(task.starter_html_code || "");
       setStarterCSScode(task.starter_css_code || "");
     }
-  }, []);
+  }, [chapters, task, topics]);
 
   const clearForm = () => {
     setChapterID(0);

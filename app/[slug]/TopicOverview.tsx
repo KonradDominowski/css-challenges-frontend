@@ -1,9 +1,8 @@
 "use client";
 
-import { Box, Flex, UnorderedList, ListItem, Text, Button, Heading } from "@chakra-ui/react";
+import { Box, Flex, UnorderedList, ListItem, Text, Button } from "@chakra-ui/react";
 import styles from "./page.module.scss";
 import Image from "next/image";
-import { it } from "node:test";
 
 interface Props {
   topic: Topic;
@@ -33,7 +32,7 @@ export default function TopicOverview({ topic, params }: Props) {
           ))}
         </div>
         <div>
-          <h3 style={{ fontWeight: 700, marginBottom: "0.5rem" }}>What You'll Learn:</h3>
+          <h3 style={{ fontWeight: 700, marginBottom: "0.5rem" }}>What You&apos;ll Learn:</h3>
           <UnorderedList>
             {topic.description?.to_learn.items.map((item, i) => (
               <ListItem key={i}>
@@ -45,7 +44,7 @@ export default function TopicOverview({ topic, params }: Props) {
         <div>
           <h3 style={{ fontWeight: 700 }}>Challenges:</h3>
           <p style={{ marginTop: "0.5rem" }}>
-            Test your skills with our interactive challenges! Build web pages and enhance your HTML expertise.
+            Test your skills with our interactive challenges! Style web pages and enhance your CSS expertise.
           </p>
         </div>
       </Flex>

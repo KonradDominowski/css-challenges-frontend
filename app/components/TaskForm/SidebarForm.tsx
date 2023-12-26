@@ -65,11 +65,11 @@ export default function SidebarForm({
 
     setMaxOrder(maxOrder!);
     setTaskOrder(task?.order || maxOrder! + 1 || 1);
-  }, [chapterID, setTaskOrder, setMaxOrder]);
+  }, [chapterID, setTaskOrder, setMaxOrder, chapters, task?.order]);
 
   useEffect(() => {
     if (!topicID) setChapterID(0);
-  }, [topicID, setChapterID]);
+  }, [topicID, setChapterID, chapters, task?.order]);
 
   return (
     <nav className={styles.sidebar}>

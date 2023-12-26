@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { KeyboardEventHandler, useCallback, useEffect, useState } from "react";
 
-import { format } from "@projectwallace/format-css";
-import pretty from "pretty";
+const format = require("@projectwallace/format-css");
+const pretty = require("pretty");
+// import { format } from "@projectwallace/format-css";
+// import pretty from "pretty";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { createTheme } from "@uiw/codemirror-themes";
@@ -111,24 +113,24 @@ export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode,
     setIsSplit((state) => !state);
   };
 
-  const formatCode = () => {
+  const formatCode = useCallback(() => {
     setHTMLcode(pretty(HTMLcode));
     setCSScode(format(CSScode));
-  };
+  }, [setCSScode, setHTMLcode, CSScode, HTMLcode]);
 
-  const keyboardShortcuts = (e: KeyboardEvent) => {
-    if (e.ctrlKey && e.shiftKey && e.key === "F") {
-      e.preventDefault();
-      formatCode();
-    } else if (e.ctrlKey && e.shiftKey && e.key === "S") {
-      e.preventDefault();
-      setIsSplit((state) => !state);
-    }
-  };
+  // const keyboardShortcuts = (e) => {
+  //   if (e.ctrlKey && e.shiftKey && e.key === "F") {
+  //     e.preventDefault();
+  //     formatCode();
+  //   } else if (e.ctrlKey && e.shiftKey && e.key === "S") {
+  //     e.preventDefault();
+  //     setIsSplit((state) => !state);
+  //   }
+  // };
 
   useEffect(() => {
     formatCode();
-  }, []);
+  }, [formatCode]);
 
   return (
     <Box
@@ -139,7 +141,15 @@ export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode,
       bgColor={"#011627"}
       borderRadius={10}
       pos={"relative"}
-      onKeyDown={keyboardShortcuts}
+      onKeyDown={(e) => {
+        if (e.ctrlKey && e.shiftKey && e.key === "F") {
+          e.preventDefault();
+          formatCode();
+        } else if (e.ctrlKey && e.shiftKey && e.key === "S") {
+          e.preventDefault();
+          setIsSplit((state) => !state);
+        }
+      }}
     >
       <Tooltip label={isSplit ? "Join editors" : "Split editors"} fontSize="xs" borderRadius={5}>
         <IconButton
