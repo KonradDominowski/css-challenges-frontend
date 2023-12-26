@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { format } from "@projectwallace/format-css";
+import pretty from "pretty";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { createTheme } from "@uiw/codemirror-themes";
@@ -20,6 +23,7 @@ import {
 import { EditorView } from "codemirror";
 
 import { JoinIcon, SplitIcon } from "@/app/components/Icons";
+import { GiFairyWand } from "react-icons/gi";
 
 interface Props {
   code: string;
@@ -107,6 +111,25 @@ export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode,
     setIsSplit((state) => !state);
   };
 
+  const formatCode = () => {
+    setHTMLcode(pretty(HTMLcode));
+    setCSScode(format(CSScode));
+  };
+
+  const keyboardShortcuts = (e: KeyboardEvent) => {
+    if (e.ctrlKey && e.shiftKey && e.key === "F") {
+      e.preventDefault();
+      formatCode();
+    } else if (e.ctrlKey && e.shiftKey && e.key === "S") {
+      e.preventDefault();
+      setIsSplit((state) => !state);
+    }
+  };
+
+  useEffect(() => {
+    formatCode();
+  }, []);
+
   return (
     <Box
       my={1}
@@ -116,26 +139,32 @@ export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode,
       bgColor={"#011627"}
       borderRadius={10}
       pos={"relative"}
+      onKeyDown={keyboardShortcuts}
     >
-      <IconButton
-        aria-label="Split editors"
-        pos={"absolute"}
-        right={4}
-        top={3}
-        size={"sm"}
-        icon={
-          isSplit ? (
-            <Tooltip label="Join editors" fontSize="xs" borderRadius={5}>
-              <JoinIcon />
-            </Tooltip>
-          ) : (
-            <Tooltip label="Split Editors" fontSize="xs" borderRadius={5}>
-              <SplitIcon />
-            </Tooltip>
-          )
-        }
-        onClick={toggleSplit}
-      />
+      <Tooltip label={isSplit ? "Join editors" : "Split editors"} fontSize="xs" borderRadius={5}>
+        <IconButton
+          aria-label="Split editors"
+          pos={"absolute"}
+          right={4}
+          top={3}
+          size={"sm"}
+          icon={isSplit ? <JoinIcon /> : <SplitIcon />}
+          onClick={toggleSplit}
+        />
+      </Tooltip>
+
+      <Tooltip label="Press Ctrl + Shift + F to format code" fontSize="xs" borderRadius={5}>
+        <IconButton
+          aria-label="Split editors"
+          pos={"absolute"}
+          right={14}
+          top={3}
+          size={"sm"}
+          icon={<GiFairyWand />}
+          onClick={formatCode}
+        />
+      </Tooltip>
+
       {!isSplit ? (
         <Tabs variant={"unstyled"}>
           <TabList color={"white"}>
