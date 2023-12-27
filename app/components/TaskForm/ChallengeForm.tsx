@@ -108,10 +108,14 @@ export default function ChallengeForm({
           name="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className={styles.description}
+          color={"rgb(90, 90, 90)"}
+          fontWeight={500}
+          lineHeight={"1.3rem"}
+          letterSpacing={"0.3px"}
           p={0}
+          minH={"200px"}
           placeholder="Put task description here"
-          resize={"vertical"}
+          // resize={"vertical"}
           borderColor={"rgba(0,0,0,0)"}
         />
         <Tooltip label={"Wrap code fragment with {{ }} to wrap them in a code block"}>
