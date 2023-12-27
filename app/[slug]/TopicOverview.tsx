@@ -22,24 +22,40 @@ export default function TopicOverview({ topic, params }: Props) {
         <h1>{topic.title}</h1>
       </Flex>
 
-      <Box py={4}>
-        <Text>
-          {topic.long_description}. This topic consists of <b>{topic.chapters!.length} chapters </b> totalling to{" "}
-          <b>{taskNumber} tasks</b>.
-        </Text>
-
-        <Text fontSize={"1.5rem"} pt={3} pb={2}>
-          Chapters
-        </Text>
-        <UnorderedList>
-          {topic.chapters!.map((chapter) => (
-            <ListItem key={chapter.id}>{chapter.title}</ListItem>
+      <Flex flexDir={"column"} gap={3}>
+        <div>
+          <h3 style={{ fontWeight: 700 }}>{topic.description?.subtitle}</h3>
+          {topic.description?.body.paragraphs.map((paragraph, i) => (
+            <Text key={i} mt={4}>
+              {paragraph.text}
+            </Text>
           ))}
-        </UnorderedList>
-        <Button as={"a"} href={`${topic.slug}/challenge/${tasks.at(0)?.id}`} my={3} size={"lg"} colorScheme={"green"}>
-          Get Started
-        </Button>
-      </Box>
+        </div>
+        <div>
+          <h3 style={{ fontWeight: 700, marginBottom: "0.5rem" }}>What You&apos;ll Learn:</h3>
+          <UnorderedList>
+            {topic.description?.to_learn.items.map((item, i) => (
+              <ListItem key={i}>
+                <strong>{item.main}</strong>: {item.sub}
+              </ListItem>
+            ))}
+          </UnorderedList>
+        </div>
+        <div>
+          <h3 style={{ fontWeight: 700 }}>Challenges:</h3>
+          <p style={{ marginTop: "0.5rem" }}>
+            Test your skills with our interactive challenges! Style web pages and enhance your CSS expertise.
+          </p>
+        </div>
+      </Flex>
+
+      <p>
+        This topic consists of <b>{topic.chapters!.length} chapters </b> totalling to
+        <b> {taskNumber} tasks</b>.
+      </p>
+      <Button as={"a"} href={`${topic.slug}/challenge/${tasks.at(0)?.id}`} my={3} size={"lg"} colorScheme={"green"}>
+        Get Started
+      </Button>
     </Box>
   );
 }

@@ -1,7 +1,13 @@
 import { getServerSession } from "next-auth";
-import TaskForm from "../components/TaskForm/TaskForm";
+import TaskForm from "@/app/components/TaskForm/TaskForm";
 
-export default async function CreateChallenge() {
+interface Props {
+  params: {
+    id: string;
+  };
+}
+
+export default async function CreateChallenge({ params }: Props) {
   const session = await getServerSession();
 
   if (!(session?.user?.email === "konrad.dominowski@gmail.com")) {
@@ -14,5 +20,8 @@ export default async function CreateChallenge() {
   const chaptersResponse = await fetch(`${process.env.BACKEND_URL}/api/chapters/`);
   const chapters: Chapter[] = await chaptersResponse.json();
 
-  return <TaskForm topics={topics} chapters={chapters} />;
+  const taskResponse = await fetch(`${process.env.BACKEND_URL}/api/tasks/${params.id}/`);
+  const task: Task = await taskResponse.json();
+
+  return <TaskForm topics={topics} chapters={chapters} task={task} />;
 }

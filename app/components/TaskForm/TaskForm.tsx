@@ -3,19 +3,35 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
-import SidebarForm from "@/app/create/TaskForm/SidebarForm";
-import ChallengeForm from "@/app/create/TaskForm/ChallengeForm";
+import SidebarForm from "@/app/components/TaskForm/SidebarForm";
+import ChallengeForm from "@/app/components/TaskForm/ChallengeForm";
 import createTask from "@/app/create/actions";
+import { redirect } from "next/navigation";
+import { decodeCodeBlocks } from "@/functions/editingCode";
 
-interface data {
-  title: string;
-  description: string;
-  target: string;
-  order: number;
-  chapter: number;
+interface Props {
+  topics: Topic[];
+  chapters: Chapter[];
+  task?: Task;
 }
 
-export default function TaskForm({ topics, chapters }: { topics: Topic[]; chapters: Chapter[] }) {
+function getBody(html: string): string {
+  let bodyStart: number = html.search("<body>") + 6;
+  let bodyEnd: number = html.search("</body>");
+
+  return html.slice(bodyStart, bodyEnd);
+}
+
+function getStyle(html: string): string {
+  let styleStart: number = html.search("<style>") + 7;
+  let styleEnd: number = html.search("</style>");
+
+  return html
+    .slice(styleStart, styleEnd)
+    .replaceAll("              body {                background-color: white              }", "");
+}
+
+export default function TaskForm({ topics, chapters, task }: Props) {
   const toast = useToast();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -30,6 +46,23 @@ export default function TaskForm({ topics, chapters }: { topics: Topic[]; chapte
   const [starterHTMLcode, setStarterHTMLcode] = useState<string>("");
   const [starterCSScode, setStarterCSScode] = useState<string>("");
 
+  useEffect(() => {
+    if (task) {
+      const chapter = chapters.find((chapter) => chapter.id == task.chapter);
+      const topic = topics.find((topic) => topic.id == chapter?.topic);
+
+      setTitle(task.title);
+      setDescription(decodeCodeBlocks(task.description));
+      setTopicID(topic?.id!);
+      setChapterID(chapter?.id!);
+      setTaskOrder(task.order);
+      setHTMLcode(getBody(task.target));
+      setCSScode(getStyle(task.target));
+      setStarterHTMLcode(task.starter_html_code || "");
+      setStarterCSScode(task.starter_css_code || "");
+    }
+  }, [chapters, task, topics]);
+
   const clearForm = () => {
     setChapterID(0);
     setTitle("");
@@ -41,17 +74,23 @@ export default function TaskForm({ topics, chapters }: { topics: Topic[]; chapte
   };
 
   async function onCreateTask(formData: FormData) {
-    const res = await createTask(formData);
+    const res = await createTask(formData, { taskID: task?.id });
 
     if (res.status === "success") {
       toast({
         position: "top",
         title: "Success!",
-        description: "Task added successfully",
+        description: "Task saved successfully",
         status: "success",
         duration: 9000,
         isClosable: true,
       });
+
+      if (task) {
+        const chapter = chapters.find((chapter) => chapter.id == task.chapter);
+        const topic = topics.find((topic) => topic.id == chapter?.topic);
+        redirect(`/${topic?.slug}/challenge/${task.id}`);
+      }
 
       clearForm();
     } else {
@@ -78,6 +117,7 @@ export default function TaskForm({ topics, chapters }: { topics: Topic[]; chapte
     <form action={onCreateTask}>
       <SidebarForm
         formIsFilled={formIsFilled}
+        task={task}
         topics={topics}
         chapters={chapters}
         topicID={topicID}

@@ -33,10 +33,24 @@ interface Topic {
   slug: string;
   logo_url: string;
   short_description: string;
+  description?: Description;
   chapters?: Chapter[];
   long_description?: string;
   order?: number;
   is_ready?: boolean;
+}
+
+interface Description {
+  challenges: string;
+  finishing_statement: string;
+  subtitle: string;
+  body: { paragraphs: { text: string }[] };
+  to_learn: {
+    items: {
+      main: string;
+      sub: string;
+    }[];
+  };
 }
 
 interface Providers {
