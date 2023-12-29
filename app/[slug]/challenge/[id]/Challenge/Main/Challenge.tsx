@@ -22,7 +22,6 @@ interface Props {
   };
 }
 
-// TODO -  Definitely need to add prettier to format the code
 export default function Challenge({ params, topic, userTaskData }: Props) {
   const { data: session } = useSession();
   const isAdmin = session?.user?.email == "konrad.dominowski@gmail.com";
