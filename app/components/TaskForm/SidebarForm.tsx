@@ -13,6 +13,9 @@ function range(end: number) {
 }
 
 interface Props {
+  preview: boolean;
+  togglePreview: () => undefined;
+  setPreview: React.Dispatch<React.SetStateAction<boolean>>;
   formIsFilled: boolean;
   task?: Task;
   topics: Topic[];
@@ -26,6 +29,8 @@ interface Props {
 }
 
 export default function SidebarForm({
+  preview,
+  togglePreview,
   formIsFilled,
   task,
   topics,
@@ -128,7 +133,10 @@ export default function SidebarForm({
           </option>
         ))}
       </Select>
-      <Button isDisabled={!formIsFilled || pending} mt={5} w={"100%"} colorScheme={"green"} type="submit">
+      <Button onClick={togglePreview} mt={5} w={"100%"} colorScheme={"purple"} type="button">
+        {preview ? "Edit" : "Preview"}
+      </Button>
+      <Button isDisabled={!formIsFilled || pending} mt={2} w={"100%"} colorScheme={"green"} type="submit">
         {pending ? <Spinner size={"sm"} /> : "Save"}
       </Button>
     </nav>

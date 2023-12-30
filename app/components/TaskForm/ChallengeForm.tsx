@@ -115,7 +115,6 @@ export default function ChallengeForm({
           p={0}
           minH={"200px"}
           placeholder="Put task description here"
-          // resize={"vertical"}
           borderColor={"rgba(0,0,0,0)"}
         />
         <Tooltip label={"Wrap code fragment with {{ }} to wrap them in a code block"}>
