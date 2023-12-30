@@ -110,8 +110,15 @@ export default function TaskForm({ topics, chapters, task }: Props) {
     setPreview((state) => !state);
   }
 
+  function togglePreviewKeyboardShortcut(e: React.KeyboardEvent<HTMLFormElement>) {
+    if (e.ctrlKey && e.shiftKey && e.key === "P") {
+      e.preventDefault();
+      togglePreview();
+    }
+  }
+
   return (
-    <form action={onCreateTask}>
+    <form action={onCreateTask} onKeyDown={togglePreviewKeyboardShortcut}>
       <SidebarForm
         preview={preview}
         togglePreview={togglePreview}

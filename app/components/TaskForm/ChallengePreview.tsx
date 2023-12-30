@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, VisuallyHiddenInput } from "@chakra-ui/react";
 
 import CodeEditor from "@/app/components/Editors";
 import TargetAndOutput from "@/app/components/TargetAndOutput";
@@ -22,6 +22,10 @@ export default function ChallengePreview({ title, description, target, starter_h
   const [srcDoc, setSrcDoc] = useState<string>("");
   const [hideDesc, setHideDesc] = useState(false);
   const [showOutline, setShowOutline] = useState(false);
+
+  useEffect(() => {
+    console.log("Challenge Preview");
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -47,6 +51,7 @@ export default function ChallengePreview({ title, description, target, starter_h
   return (
     <>
       <div className={styles.main} id="main">
+        <VisuallyHiddenInput type="text" autoFocus />
         <Flex alignItems={"center"} justify={"space-between"}>
           <h1>{title}</h1>
         </Flex>
