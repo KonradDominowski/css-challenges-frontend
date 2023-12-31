@@ -1,15 +1,11 @@
+const horizontalBreak = `<br><br><hr><br>`;
+
 export function decodeCodeBlocks(text: string): string {
-  return text
-    .replaceAll('<span class="code">', "{{")
-    .replaceAll("</span>", "}}")
-    .replaceAll("<br><br><hr><br>", "{---}");
+  return text.replaceAll('<span class="code">', "{{").replaceAll("</span>", "}}").replaceAll(horizontalBreak, "{---}");
 }
 
 export function encodeWithCodeblocks(text: string): string {
-  return text
-    .replaceAll("{{", '<span class="code">')
-    .replaceAll("}}", "</span>")
-    .replaceAll("{---}", "<br><br><hr><br>");
+  return text.replaceAll("{{", '<span class="code">').replaceAll("}}", "</span>").replaceAll("{---}", horizontalBreak);
 }
 
 export function getBodyFromHTML(html: string): string {

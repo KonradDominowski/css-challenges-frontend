@@ -24,10 +24,6 @@ export default function ChallengePreview({ title, description, target, starter_h
   const [showOutline, setShowOutline] = useState(false);
 
   useEffect(() => {
-    console.log("Challenge Preview");
-  }, []);
-
-  useEffect(() => {
     const timeout = setTimeout(() => {
       setSrcDoc(`
       <html lang="en">
