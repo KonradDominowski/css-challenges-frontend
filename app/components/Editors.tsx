@@ -1,9 +1,7 @@
-import { KeyboardEventHandler, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-const format = require("@projectwallace/format-css");
-const pretty = require("pretty");
-// import { format } from "@projectwallace/format-css";
-// import pretty from "pretty";
+import { format } from "@projectwallace/format-css";
+import pretty from "pretty";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { createTheme } from "@uiw/codemirror-themes";
