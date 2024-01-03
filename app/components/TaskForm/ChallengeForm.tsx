@@ -1,22 +1,36 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 import CodeEditor from "@/app/components/Editors";
 import {
   Box,
+  Button,
   Card,
   CardHeader,
+  Code,
   Divider,
   Flex,
+  Icon,
+  Kbd,
+  ListItem,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
   Tab,
   TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
   Textarea,
   Tooltip,
+  UnorderedList,
   VisuallyHiddenInput,
 } from "@chakra-ui/react";
 
@@ -73,6 +87,15 @@ export default function ChallengeForm({
   starterSrcDoc,
   setStarterSrcDoc,
 }: Props) {
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (descriptionRef.current) {
+      descriptionRef.current.focus();
+      descriptionRef.current.selectionStart = descriptionRef.current.selectionEnd = descriptionRef.current.value.length;
+    }
+  }, []);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       updateSrcDoc(HTMLcode, CSScode, setSrcDoc);
@@ -105,6 +128,8 @@ export default function ChallengeForm({
       </Flex>
       <Box pos={"relative"} w={"60%"}>
         <Textarea
+          ref={descriptionRef}
+          autoFocus
           name="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -115,12 +140,25 @@ export default function ChallengeForm({
           p={0}
           minH={"200px"}
           placeholder="Put task description here"
-          // resize={"vertical"}
           borderColor={"rgba(0,0,0,0)"}
         />
-        <Tooltip label={"Wrap code fragment with {{ }} to wrap them in a code block"}>
-          <InfoOutlineIcon pos={"absolute"} right={"-1.2rem"} top={"0.3rem"} />
-        </Tooltip>
+        <Popover trigger="hover" placement="right">
+          <PopoverTrigger>
+            <InfoOutlineIcon boxSize={5} pos={"absolute"} right={"-1.5rem"} top={"0.3rem"} />
+          </PopoverTrigger>
+          <PopoverContent fontSize={"0.85rem"}>
+            <PopoverArrow />
+            <PopoverBody>
+              <Text>
+                {"Wrap code fragment with"} <Code>{"{{ }}"}</Code> {"to wrap them in a code block"}
+              </Text>
+              <Divider />
+              <Text>
+                Toggle Preview - <Kbd>ctrl</Kbd> + <Kbd>shift</Kbd> + <Kbd>P</Kbd>
+              </Text>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
       </Box>
       <div>
         <Box resize={"horizontal"} minW={"600px"} maxW={"100%"} overflow={"auto"}>

@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
 import SidebarForm from "@/app/components/TaskForm/SidebarForm";
-import ChallengeForm from "@/app/components/TaskForm/ChallengeForm";
 import createTask from "@/app/create/actions";
 import { redirect } from "next/navigation";
-import { decodeCodeBlocks } from "@/functions/editingCode";
+import { decodeCodeBlocks, encodeWithCodeblocks, getBodyFromHTML, getStyleFromHTML } from "@/functions/editingCode";
+import ChallengeForm from "./ChallengeForm";
+import ChallengePreview from "./ChallengePreview";
 
 interface Props {
   topics: Topic[];
@@ -15,24 +16,10 @@ interface Props {
   task?: Task;
 }
 
-function getBody(html: string): string {
-  let bodyStart: number = html.search("<body>") + 6;
-  let bodyEnd: number = html.search("</body>");
-
-  return html.slice(bodyStart, bodyEnd);
-}
-
-function getStyle(html: string): string {
-  let styleStart: number = html.search("<style>") + 7;
-  let styleEnd: number = html.search("</style>");
-
-  return html
-    .slice(styleStart, styleEnd)
-    .replaceAll("              body {                background-color: white              }", "");
-}
-
+// TODO - prevent route change so data is not lost
 export default function TaskForm({ topics, chapters, task }: Props) {
   const toast = useToast();
+  const [preview, setPreview] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [srcDoc, setSrcDoc] = useState<string>("");
@@ -56,8 +43,8 @@ export default function TaskForm({ topics, chapters, task }: Props) {
       setTopicID(topic?.id!);
       setChapterID(chapter?.id!);
       setTaskOrder(task.order);
-      setHTMLcode(getBody(task.target));
-      setCSScode(getStyle(task.target));
+      setHTMLcode(getBodyFromHTML(task.target));
+      setCSScode(getStyleFromHTML(task.target));
       setStarterHTMLcode(task.starter_html_code || "");
       setStarterCSScode(task.starter_css_code || "");
     }
@@ -113,9 +100,29 @@ export default function TaskForm({ topics, chapters, task }: Props) {
     }
   }, [title, description, srcDoc, topicID, chapterID, taskOrder]);
 
+  function togglePreview(): undefined {
+    if (!preview) {
+      setDescription((state) => encodeWithCodeblocks(state));
+    } else {
+      setDescription((state) => decodeCodeBlocks(state));
+    }
+
+    setPreview((state) => !state);
+  }
+
+  function togglePreviewKeyboardShortcut(e: React.KeyboardEvent<HTMLFormElement>) {
+    if (e.ctrlKey && e.shiftKey && e.key === "P") {
+      e.preventDefault();
+      togglePreview();
+    }
+  }
+
   return (
-    <form action={onCreateTask}>
+    <form action={onCreateTask} onKeyDown={togglePreviewKeyboardShortcut}>
       <SidebarForm
+        preview={preview}
+        togglePreview={togglePreview}
+        setPreview={setPreview}
         formIsFilled={formIsFilled}
         task={task}
         topics={topics}
@@ -127,24 +134,34 @@ export default function TaskForm({ topics, chapters, task }: Props) {
         taskOrder={taskOrder}
         setTaskOrder={setTaskOrder}
       />
-      <ChallengeForm
-        title={title}
-        setTitle={setTitle}
-        description={description}
-        setDescription={setDescription}
-        srcDoc={srcDoc}
-        setSrcDoc={setSrcDoc}
-        HTMLcode={HTMLcode}
-        setHTMLcode={setHTMLcode}
-        CSScode={CSScode}
-        setCSScode={setCSScode}
-        starterCSScode={starterCSScode}
-        setStarterCSScode={setStarterCSScode}
-        starterHTMLcode={starterHTMLcode}
-        setStarterHTMLcode={setStarterHTMLcode}
-        starterSrcDoc={starterSrcDoc}
-        setStarterSrcDoc={setStarterSrcDoc}
-      />
+      {preview ? (
+        <ChallengePreview
+          title={title}
+          description={description}
+          target={srcDoc}
+          starter_html_code={starterHTMLcode}
+          starter_css_code={starterCSScode}
+        />
+      ) : (
+        <ChallengeForm
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+          srcDoc={srcDoc}
+          setSrcDoc={setSrcDoc}
+          HTMLcode={HTMLcode}
+          setHTMLcode={setHTMLcode}
+          CSScode={CSScode}
+          setCSScode={setCSScode}
+          starterCSScode={starterCSScode}
+          setStarterCSScode={setStarterCSScode}
+          starterHTMLcode={starterHTMLcode}
+          setStarterHTMLcode={setStarterHTMLcode}
+          starterSrcDoc={starterSrcDoc}
+          setStarterSrcDoc={setStarterSrcDoc}
+        />
+      )}
     </form>
   );
 }

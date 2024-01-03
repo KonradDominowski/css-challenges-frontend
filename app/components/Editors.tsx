@@ -111,24 +111,25 @@ export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode,
     setIsSplit((state) => !state);
   };
 
-  const formatCode = useCallback(() => {
+  const formatCode = () => {
     setHTMLcode(pretty(HTMLcode));
     setCSScode(format(CSScode));
-  }, [setCSScode, setHTMLcode, CSScode, HTMLcode]);
+  };
 
-  // const keyboardShortcuts = (e) => {
-  //   if (e.ctrlKey && e.shiftKey && e.key === "F") {
-  //     e.preventDefault();
-  //     formatCode();
-  //   } else if (e.ctrlKey && e.shiftKey && e.key === "S") {
-  //     e.preventDefault();
-  //     setIsSplit((state) => !state);
-  //   }
-  // };
+  const keyboardShortcuts = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.ctrlKey && e.shiftKey && e.key === "F") {
+      e.preventDefault();
+      formatCode();
+    } else if (e.ctrlKey && e.shiftKey && e.key === "S") {
+      e.preventDefault();
+      setIsSplit((state) => !state);
+    }
+  };
 
   useEffect(() => {
     formatCode();
-  }, [formatCode]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box
@@ -139,15 +140,7 @@ export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode,
       bgColor={"#011627"}
       borderRadius={10}
       pos={"relative"}
-      onKeyDown={(e) => {
-        if (e.ctrlKey && e.shiftKey && e.key === "F") {
-          e.preventDefault();
-          formatCode();
-        } else if (e.ctrlKey && e.shiftKey && e.key === "S") {
-          e.preventDefault();
-          setIsSplit((state) => !state);
-        }
-      }}
+      onKeyDown={keyboardShortcuts}
     >
       <Tooltip label={isSplit ? "Join editors" : "Split editors"} fontSize="xs" borderRadius={5}>
         <IconButton

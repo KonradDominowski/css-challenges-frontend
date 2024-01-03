@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["types/next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["types/next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "@projectwallace/format-css.d.ts"],
   "exclude": ["node_modules"]
 }

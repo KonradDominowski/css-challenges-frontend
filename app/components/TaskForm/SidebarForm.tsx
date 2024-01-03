@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
-import { Button, FormLabel, Select, Spinner } from "@chakra-ui/react";
+import { Button, FormLabel, Select, Spinner, Tooltip } from "@chakra-ui/react";
 
 import styles from "./SidebarForm.module.scss";
 
@@ -13,6 +13,9 @@ function range(end: number) {
 }
 
 interface Props {
+  preview: boolean;
+  togglePreview: () => undefined;
+  setPreview: React.Dispatch<React.SetStateAction<boolean>>;
   formIsFilled: boolean;
   task?: Task;
   topics: Topic[];
@@ -26,6 +29,8 @@ interface Props {
 }
 
 export default function SidebarForm({
+  preview,
+  togglePreview,
   formIsFilled,
   task,
   topics,
@@ -128,9 +133,15 @@ export default function SidebarForm({
           </option>
         ))}
       </Select>
-      <Button isDisabled={!formIsFilled || pending} mt={5} w={"100%"} colorScheme={"green"} type="submit">
-        {pending ? <Spinner size={"sm"} /> : "Save"}
+      <Button onClick={togglePreview} mt={5} w={"100%"} colorScheme={"purple"} type="button">
+        {preview ? "Edit" : "Preview"}
       </Button>
+      {/* I don't know why, but You can't submit the task from the preview mode, so i disabled submitting form unless You are in Edit mode */}
+      <Tooltip hasArrow isDisabled={!preview} label={"Enable Edit mode to submit task"}>
+        <Button isDisabled={!formIsFilled || pending || preview} mt={2} w={"100%"} colorScheme={"green"} type="submit">
+          {pending ? <Spinner size={"sm"} /> : "Save"}
+        </Button>
+      </Tooltip>
     </nav>
   );
 }
