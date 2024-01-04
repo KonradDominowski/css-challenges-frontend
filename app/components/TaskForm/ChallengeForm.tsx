@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 import CodeEditor from "@/app/components/Editors";
@@ -11,15 +11,11 @@ import {
   Code,
   Divider,
   Flex,
-  Icon,
   Kbd,
-  ListItem,
   Popover,
   PopoverArrow,
   PopoverBody,
-  PopoverCloseButton,
   PopoverContent,
-  PopoverHeader,
   PopoverTrigger,
   Tab,
   TabIndicator,
@@ -29,8 +25,6 @@ import {
   Tabs,
   Text,
   Textarea,
-  Tooltip,
-  UnorderedList,
   VisuallyHiddenInput,
 } from "@chakra-ui/react";
 
@@ -87,14 +81,8 @@ export default function ChallengeForm({
   starterSrcDoc,
   setStarterSrcDoc,
 }: Props) {
+  const previousDescription = useRef(description);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    if (descriptionRef.current) {
-      descriptionRef.current.focus();
-      descriptionRef.current.selectionStart = descriptionRef.current.selectionEnd = descriptionRef.current.value.length;
-    }
-  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -111,6 +99,41 @@ export default function ChallengeForm({
 
     return () => clearTimeout(timeout);
   }, [starterHTMLcode, starterCSScode, setStarterSrcDoc]);
+
+  // TODO - the caret moves to the end of the text, I want it to stay at the same place
+  function wrapInBraces(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    const keys = ["{", "[", "/"];
+
+    if (e.ctrlKey && keys.includes(e.key)) {
+      e.preventDefault();
+      const textArea = descriptionRef.current;
+      if (!textArea) return;
+
+      const openingBrackets = e.key + e.key;
+
+      let closingBrackets: closingBrackets;
+      if (e.key === "{") closingBrackets = "}}";
+      else if (e.key === "[") closingBrackets = "]]";
+      else closingBrackets = "\\\\";
+
+      if (textArea.selectionStart != textArea.selectionEnd) {
+        let newText =
+          textArea.value.substring(0, textArea.selectionStart) +
+          openingBrackets +
+          textArea.value.substring(textArea.selectionStart, textArea.selectionEnd) +
+          closingBrackets +
+          textArea.value.substring(textArea.selectionEnd);
+
+        previousDescription.current = description;
+        setDescription(newText);
+      }
+    }
+
+    if (e.ctrlKey && e.key === "z") {
+      e.preventDefault();
+      setDescription(previousDescription.current);
+    }
+  }
 
   return (
     <div className={styles.main} id="main">
@@ -133,6 +156,7 @@ export default function ChallengeForm({
           name="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          onKeyDown={wrapInBraces}
           color={"rgb(90, 90, 90)"}
           fontWeight={500}
           lineHeight={"1.3rem"}
@@ -150,11 +174,17 @@ export default function ChallengeForm({
             <PopoverArrow />
             <PopoverBody>
               <Text>
-                {"Wrap code fragment with"} <Code>{"{{ }}"}</Code> {"to wrap them in a code block"}
+                <Kbd>ctrl</Kbd> + <Kbd>{"{"}</Kbd> - Wrap Code <Code>{"{{ }}"}</Code>
               </Text>
               <Divider />
               <Text>
-                Toggle Preview - <Kbd>ctrl</Kbd> + <Kbd>shift</Kbd> + <Kbd>P</Kbd>
+                <Kbd>ctrl</Kbd> + <Kbd>{"["}</Kbd> - Ordered List <Code>{"[[ ]]"}</Code>
+                <Divider />
+                <Kbd>ctrl</Kbd> + <Kbd>/</Kbd> - List Item <Code>{"// \\\\"}</Code>
+              </Text>
+              <Divider />
+              <Text>
+                <Kbd>ctrl</Kbd> + <Kbd>shift</Kbd> + <Kbd>P</Kbd> - Toggle Preview
               </Text>
             </PopoverBody>
           </PopoverContent>
