@@ -6,6 +6,7 @@ import Challenge from "@/app/[slug]/challenge/[id]/Challenge/Main/Challenge";
 import { useState, experimental_useOptimistic as useOptimistic } from "react";
 import { createCompleteStatus } from "./actions";
 import { useToast } from "@chakra-ui/react";
+import Test from "./testLoading/loading";
 
 interface Props {
   topic: Topic;
@@ -71,7 +72,7 @@ export default function ChallengePage({ params, topic, tasksData, session }: Pro
   return (
     <main>
       <form action={onSubmitTask}>
-        <Sidebar topic={topic} tasksData={optimisticTasks} params={params} />
+        {/* <Sidebar topic={topic} tasksData={optimisticTasks} params={params} /> */}
         <Challenge
           topic={topic}
           userTaskData={optimisticTasks?.find((el) => +el.task === +params.id)}
