@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth/next";
 
-import fetchTopic from "@/functions/fetchTopic";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ChallengePage from "@/app/[slug]/challenge/[id]/Challenge/ChallengePage";
+import fetchTopic from "@/functions/fetchTopic";
 
 interface Props {
   params: {

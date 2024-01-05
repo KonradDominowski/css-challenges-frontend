@@ -32,8 +32,7 @@ export default async function Home() {
   const topicsResponse = await fetch(`${process.env.BACKEND_URL}/api/topics/`, { next: { tags: ["topics"] } });
   const topics = await topicsResponse.json();
 
-  // TODO - deployment database has some weird stfuff - topic description is weird,
-  // TODO - handle the error cases where the backend is not working
+  // TODO - Flash of unstyled content (FOUC) - fix it
   return (
     <>
       <Title />
