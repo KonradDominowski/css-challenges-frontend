@@ -2,12 +2,11 @@
 import { Flex, Box, HStack, useColorModeValue, SystemStyleObject } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Image from "next/image";
 
 import { nunito } from "./../layout";
-import styles from "./NavBar.module.scss";
 import alogo from "../../media/alogo.svg";
 import { SignInButton, SignOutButton } from "./Buttons";
+import Image from "next/image";
 
 const links: Link[] = [
   {
@@ -52,7 +51,7 @@ export default function NavBar() {
     >
       <HStack>
         <Link href={"/"}>
-          <Image className={styles.logo} src={alogo} alt="logo" />
+          <Image height={24} width={64} src={alogo} alt="logo" />
         </Link>
         <HStack align={"center"} paddingLeft={"1rem"} fontSize={"medium"} spacing={2}>
           {links.map((link, i) => (
