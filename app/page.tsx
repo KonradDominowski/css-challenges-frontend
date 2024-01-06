@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
+import type { Metadata } from "next";
 
-import Body from "./components/Body";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 import Title from "./components/Title";
+import { Suspense } from "react";
+import { LoadingMainPage } from "./components/Loadings/Index";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import Body from "./components/Body";
 
 export const metadata: Metadata = {
   title: "CSS Challenges",
@@ -13,7 +15,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
+// TODO - Flash of unstyled content (FOUC) - fix it
+export default function Home() {
+  return (
+    <>
+      <Title />
+      <Suspense fallback={<LoadingMainPage />}>
+        <Main />
+      </Suspense>
+    </>
+  );
+}
+
+async function Main() {
   const session = await getServerSession(authOptions);
 
   let tasksData;
@@ -32,11 +46,5 @@ export default async function Home() {
   const topicsResponse = await fetch(`${process.env.BACKEND_URL}/api/topics/`, { next: { tags: ["topics"] } });
   const topics = await topicsResponse.json();
 
-  // TODO - Flash of unstyled content (FOUC) - fix it
-  return (
-    <>
-      <Title />
-      <Body topics={topics} />
-    </>
-  );
+  return <Body topics={topics} />;
 }

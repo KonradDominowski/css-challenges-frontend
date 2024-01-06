@@ -2,6 +2,8 @@ import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ChallengePage from "@/app/[slug]/challenge/[id]/Challenge/ChallengePage";
+import { Suspense } from "react";
+import LoadingChallenge from "@/app/components/Loadings/Challenge";
 import fetchTopic from "@/functions/fetchTopic";
 
 interface Props {
@@ -12,8 +14,15 @@ interface Props {
 }
 
 // TODO - generate metadata: page title dynamically
-// TODO - lodaing screen and maybe change layout so that sidebar is seperate
-export default async function ChallengeLayout({ params }: Props) {
+export default function Challenge({ params }: Props) {
+  return (
+    <Suspense fallback={<LoadingChallenge />}>
+      <ChallengeLayout params={params} />
+    </Suspense>
+  );
+}
+
+async function ChallengeLayout({ params }: Props) {
   const session = await getServerSession(authOptions);
 
   let tasksData: TaskData[] | undefined = undefined;
@@ -29,8 +38,7 @@ export default async function ChallengeLayout({ params }: Props) {
     tasksData = await response.json();
   }
 
-  const topicData = fetchTopic(params.slug);
-  const topic: Topic = await topicData;
+  const topic = await fetchTopic(params.slug);
 
   return <ChallengePage topic={topic} tasksData={tasksData} params={params} session={session} />;
 }

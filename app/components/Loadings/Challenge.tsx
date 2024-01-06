@@ -2,7 +2,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { Flex, Button, IconButton, Skeleton, SkeletonText, Box, Text } from "@chakra-ui/react";
 
-export default function loading() {
+export default function LoadingChallenge() {
   return (
     <Box ml={"12rem"} mr={"1rem"} pl={"2rem"}>
       <Flex justify={"space-between"} align={"center"}>

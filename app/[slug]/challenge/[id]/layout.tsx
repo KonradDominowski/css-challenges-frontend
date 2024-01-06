@@ -1,6 +1,6 @@
-import fetchTopic from "@/functions/fetchTopic";
 import Sidebar from "./Challenge/Sidebar/Sidebar";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import fetchTopic from "@/functions/fetchTopic";
 import { getServerSession } from "next-auth";
 
 interface Props {
@@ -27,8 +27,7 @@ export default async function layout({ children, params }: Props) {
     tasksData = await response.json();
   }
 
-  const topicData = fetchTopic(params.slug);
-  const topic: Topic = await topicData;
+  const topic = await fetchTopic(params.slug);
 
   return (
     <>
