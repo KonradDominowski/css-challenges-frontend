@@ -9,7 +9,7 @@ interface Props {
   };
 }
 
-export default async function SectionPage({ params }: Props) {
+export default function SectionPage({ params }: Props) {
   return (
     <Suspense fallback={<TopicOverviewSkeleton />}>
       <Topic params={params} />
