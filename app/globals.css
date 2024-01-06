@@ -25,6 +25,11 @@ nav {
   outline: none !important;
 }
 
+/* I don't remember what these styles were used for */
+/* .cm-editor {
+  border: 2px solid white;
+} */
+
 .code {
   font-family: monospace;
   padding: 4px;
