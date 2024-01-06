@@ -6,7 +6,6 @@ import Challenge from "@/app/[slug]/challenge/[id]/Challenge/Main/Challenge";
 import { useState, experimental_useOptimistic as useOptimistic } from "react";
 import { createCompleteStatus } from "./actions";
 import { useToast } from "@chakra-ui/react";
-import Test from "./testLoading/loading";
 
 interface Props {
   topic: Topic;

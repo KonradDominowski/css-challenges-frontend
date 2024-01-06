@@ -12,11 +12,11 @@ export default function loading() {
           </Text>
         </Skeleton>
         <Flex>
-          <IconButton as={"a"} href={""} isDisabled={true} aria-label="" icon={<ArrowLeftIcon />} />
-          <Button isLoading={true} colorScheme="green" type="submit" isDisabled={true}>
+          <IconButton isDisabled aria-label="" icon={<ArrowLeftIcon />} />
+          <Button isLoading colorScheme="green" type="submit">
             Submit
           </Button>
-          <IconButton as={"a"} href={""} isDisabled={true} aria-label="" icon={<ArrowRightIcon />} />
+          <IconButton isDisabled aria-label="" icon={<ArrowRightIcon />} />
         </Flex>
       </Flex>
       <Box w={"60%"}>
