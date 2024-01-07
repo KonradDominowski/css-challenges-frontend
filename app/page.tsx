@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   },
 };
 
+// Why use Suspense instead of Next.js loading.tsx?
+// loading.tsx is loaded for all children, so even a few routes deep the loading screen is shown from the route many routes above
 // TODO - Flash of unstyled content (FOUC) - fix it
 export default function Home() {
   return (

@@ -1,7 +1,6 @@
 "use client";
 
-import { Box, Flex, UnorderedList, ListItem, Text, Button } from "@chakra-ui/react";
-import styles from "./page.module.scss";
+import { Box, Flex, UnorderedList, ListItem, Text, Button, Heading } from "@chakra-ui/react";
 import Image from "next/image";
 
 interface Props {
@@ -16,15 +15,19 @@ export default function TopicOverview({ topic, params }: Props) {
   const taskNumber = tasks.length;
 
   return (
-    <Box className={styles.main} maxW={960} m={"auto"} my={10}>
+    <Box maxW={960} m={"auto"} my={10}>
       <Flex justify={"left"} gap={7} align={"center"} mb={5}>
         <Image src={topic.logo_url} height={150} width={150} style={{ maxHeight: "150px" }} alt="logo" />
-        <h1>{topic.title}</h1>
+        <Text as={"h1"} pt={"1rem"} fontSize={"5rem"}>
+          {topic.title}
+        </Text>
       </Flex>
 
       <Flex flexDir={"column"} gap={3}>
         <div>
-          <h3 style={{ fontWeight: 700 }}>{topic.description?.subtitle}</h3>
+          <Heading as={"h3"} fontSize={"1.5rem"} style={{ fontWeight: 700 }}>
+            {topic.description?.subtitle}
+          </Heading>
           {topic.description?.body.paragraphs.map((paragraph, i) => (
             <Text key={i} mt={4}>
               {paragraph.text}
@@ -32,7 +35,9 @@ export default function TopicOverview({ topic, params }: Props) {
           ))}
         </div>
         <div>
-          <h3 style={{ fontWeight: 700, marginBottom: "0.5rem" }}>What You&apos;ll Learn:</h3>
+          <Heading as={"h3"} fontSize={"1.5rem"} style={{ fontWeight: 700, marginBottom: "0.5rem" }}>
+            What You&apos;ll Learn:
+          </Heading>
           <UnorderedList>
             {topic.description?.to_learn.items.map((item, i) => (
               <ListItem key={i}>
@@ -42,7 +47,9 @@ export default function TopicOverview({ topic, params }: Props) {
           </UnorderedList>
         </div>
         <div>
-          <h3 style={{ fontWeight: 700 }}>Challenges:</h3>
+          <Heading as={"h3"} fontSize={"1.5rem"} style={{ fontWeight: 700 }}>
+            Challenges:
+          </Heading>
           <p style={{ marginTop: "0.5rem" }}>
             Test your skills with our interactive challenges! Style web pages and enhance your CSS expertise.
           </p>
