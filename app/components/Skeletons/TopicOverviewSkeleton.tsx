@@ -1,18 +1,17 @@
 "use client";
 
 import { Box, Flex, Skeleton, SkeletonText } from "@chakra-ui/react";
-import styles from "./../../[slug]/page.module.scss";
 
 export default function TopicOverviewSkeleton() {
   return (
-    <Box className={styles.main} maxW={960} m={"auto"} my={10}>
+    <Box maxW={960} m={"auto"} my={10}>
       <Flex justify={"left"} gap={7} align={"center"} mb={5}>
         <Skeleton borderRadius={20}>
           <Box w={130} h={150}>
             .
           </Box>
         </Skeleton>
-        <Skeleton h={"70px"}>
+        <Skeleton h={"70px"} w={"300px"}>
           <h1>Title Title</h1>
         </Skeleton>
       </Flex>

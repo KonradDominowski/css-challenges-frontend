@@ -1,7 +1,7 @@
 "use client";
 import styles from "./Sidebar.module.scss";
 
-import { Text, List, ListItem, Button, Icon, Spinner } from "@chakra-ui/react";
+import { Text, List, ListItem, Button, Icon, Spinner, Box, calc } from "@chakra-ui/react";
 import { MdCheckCircle, MdCheckCircleOutline } from "react-icons/md";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
@@ -18,7 +18,14 @@ export default function Sidebar({ topic, params, tasksData }: Props) {
   const { pending } = useFormStatus();
 
   return (
-    <nav className={styles.sidebar}>
+    <Box
+      as={"nav"}
+      pos={"fixed"}
+      height={"calc(100svh - 4rem)"}
+      w={"12rem"}
+      borderRight={"1px solid rgba(48, 48, 255, 0.2)"}
+      overflowY={"scroll"}
+    >
       <Text as={"span"} color={"gray.700"} py={2} px={4} display={"flex"} justifyContent={"left"} fontWeight={600}>
         {topic?.title}
       </Text>
@@ -73,6 +80,6 @@ export default function Sidebar({ topic, params, tasksData }: Props) {
           </ListItem>
         ))}
       </List>
-    </nav>
+    </Box>
   );
 }

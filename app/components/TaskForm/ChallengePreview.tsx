@@ -6,8 +6,6 @@ import { Box, Flex, Text, VisuallyHiddenInput } from "@chakra-ui/react";
 import CodeEditor from "@/app/components/Editors";
 import TargetAndOutput from "@/app/components/TargetAndOutput";
 
-import styles from "./ChallengePreview.module.scss";
-
 interface Props {
   title: string;
   description: string;
@@ -21,7 +19,6 @@ export default function ChallengePreview({ title, description, target, starter_h
   const [CSScode, setCSScode] = useState<string>(starter_css_code || "");
   const [srcDoc, setSrcDoc] = useState<string>("");
   const [hideDesc, setHideDesc] = useState(false);
-  const [showOutline, setShowOutline] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -40,34 +37,46 @@ export default function ChallengePreview({ title, description, target, starter_h
     return () => clearTimeout(timeout);
   }, [HTMLcode, CSScode]);
 
-  let classes = styles.description;
-  if (hideDesc) classes += ` ${styles.hidden}`;
-  if (showOutline) classes += ` ${styles.outline}`;
+  let hiddenStyles: React.CSSProperties = {};
+  if (hideDesc) {
+    hiddenStyles = {
+      WebkitMaskImage: "linear-gradient(120deg, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 60%)",
+      maskImage: "linear-gradient(120deg, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 60%)",
+    };
+  }
 
   return (
-    <>
-      <div className={styles.main} id="main">
-        <VisuallyHiddenInput type="text" autoFocus />
-        <Flex alignItems={"center"} justify={"space-between"}>
-          <h1>{title}</h1>
-        </Flex>
-        <Text
-          className={classes}
-          py={3}
-          borderRadius={5}
-          onClick={() => setHideDesc((state) => !state)}
-          onMouseEnter={() => setShowOutline(true)}
-          onMouseLeave={() => setShowOutline(false)}
-          id="description"
-          dangerouslySetInnerHTML={{ __html: !hideDesc ? description : description.slice(0, 60) }}
-        ></Text>
-        <div>
-          <Box mb={4} minW={"600px"} maxW={"100%"} resize={"horizontal"} overflow={"auto"}>
-            <TargetAndOutput target={target} output={srcDoc} />
-          </Box>
-          <CodeEditor HTMLcode={HTMLcode} setHTMLcode={setHTMLcode} CSScode={CSScode} setCSScode={setCSScode} />
-        </div>
+    <Box ml={"12rem"} mr={"1rem"} pl={"2rem"}>
+      <VisuallyHiddenInput type="text" autoFocus />
+      <Flex alignItems={"center"} justify={"space-between"}>
+        <Text as={"h1"} pt={"1rem"} fontSize={"3rem"} fontWeight={400}>
+          {title}
+        </Text>
+      </Flex>
+      <Text
+        py={3}
+        borderRadius={10}
+        w={"60%"}
+        cursor={"pointer"}
+        color={"rgb(90, 90, 90)"}
+        lineHeight={"1.3rem"}
+        fontWeight={500}
+        letterSpacing={"0.5px"}
+        transition={"0.15s"}
+        _hover={{
+          boxShadow: "0 0 10px 0px rgba(0, 0, 0, 0.08)",
+        }}
+        style={hiddenStyles}
+        onClick={() => setHideDesc((state) => !state)}
+        id="description"
+        dangerouslySetInnerHTML={{ __html: !hideDesc ? description : description.slice(0, 60) }}
+      ></Text>
+      <div>
+        <Box mb={4} minW={"600px"} maxW={"100%"} resize={"horizontal"} overflow={"auto"}>
+          <TargetAndOutput target={target} output={srcDoc} />
+        </Box>
+        <CodeEditor HTMLcode={HTMLcode} setHTMLcode={setHTMLcode} CSScode={CSScode} setCSScode={setCSScode} />
       </div>
-    </>
+    </Box>
   );
 }

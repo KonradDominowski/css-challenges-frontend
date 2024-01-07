@@ -1,5 +1,7 @@
-import fetchTopic from "@/functions/fetchTopic";
 import TopicOverview from "./TopicOverview";
+import { Suspense } from "react";
+import TopicOverviewSkeleton from "../components/Skeletons/TopicOverviewSkeleton";
+import fetchTopic from "@/functions/fetchTopic";
 
 interface Props {
   params: {
@@ -7,9 +9,16 @@ interface Props {
   };
 }
 
-export default async function SectionPage({ params }: Props) {
-  const topicData: Promise<Topic> = fetchTopic(params.slug);
-  const topic = await topicData;
+export default function SectionPage({ params }: Props) {
+  return (
+    <Suspense fallback={<TopicOverviewSkeleton />}>
+      <Topic params={params} />
+    </Suspense>
+  );
+}
+
+async function Topic({ params }: Props) {
+  const topic = await fetchTopic(params.slug);
 
   return <TopicOverview topic={topic} params={params} />;
 }

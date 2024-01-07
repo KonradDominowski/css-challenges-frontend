@@ -62,3 +62,5 @@ interface Link {
   name: string;
   href: string;
 }
+
+type closingBrackets = "}}" | "]]" | "\\\\";

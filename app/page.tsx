@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
+import type { Metadata } from "next";
 
-import Body from "./components/Body";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 import Title from "./components/Title";
+import { Suspense } from "react";
+import { LoadingMainPage } from "./components/Loadings/Index";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import Body from "./components/Body";
 
 export const metadata: Metadata = {
   title: "CSS Challenges",
@@ -13,7 +15,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
+// Why use Suspense instead of Next.js loading.tsx?
+// loading.tsx is loaded for all children, so even a few routes deep the loading screen is shown from the route many routes above
+// TODO - Flash of unstyled content (FOUC) - fix it
+export default function Home() {
+  return (
+    <>
+      <Title />
+      <Suspense fallback={<LoadingMainPage />}>
+        <Main />
+      </Suspense>
+    </>
+  );
+}
+
+async function Main() {
   const session = await getServerSession(authOptions);
 
   let tasksData;
@@ -32,12 +48,5 @@ export default async function Home() {
   const topicsResponse = await fetch(`${process.env.BACKEND_URL}/api/topics/`, { next: { tags: ["topics"] } });
   const topics = await topicsResponse.json();
 
-  // TODO - deployment database has some weird stfuff - topic description is weird,
-  // TODO - handle the error cases where the backend is not working
-  return (
-    <>
-      <Title />
-      <Body topics={topics} />
-    </>
-  );
+  return <Body topics={topics} />;
 }
