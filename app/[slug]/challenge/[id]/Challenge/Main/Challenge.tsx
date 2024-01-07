@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Session } from "next-auth";
-import { Box, Flex, IconButton, VisuallyHiddenInput, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, IconButton, VisuallyHiddenInput, Text, Button, Heading } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 import CodeEditor from "@/app/components/Editors";
@@ -32,7 +32,6 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
   const [CSScode, setCSScode] = useState<string>(userTaskData?.css_code || task.starter_css_code || "");
   const [srcDoc, setSrcDoc] = useState<string>("");
   const [hideDesc, setHideDesc] = useState(false);
-  const [showOutline, setShowOutline] = useState(false);
 
   function getNextTaskId(): string | undefined {
     const tasks = topic.chapters?.flatMap((chapter) => chapter.tasks)!;
@@ -73,15 +72,21 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
     return () => clearTimeout(timeout);
   }, [HTMLcode, CSScode]);
 
-  let classes = styles.description;
-  if (hideDesc) classes += ` ${styles.hidden}`;
-  if (showOutline) classes += ` ${styles.outline}`;
+  let hiddenStyles: React.CSSProperties = {};
+  if (hideDesc) {
+    hiddenStyles = {
+      WebkitMaskImage: "linear-gradient(120deg, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 60%)",
+      maskImage: "linear-gradient(120deg, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 60%)",
+    };
+  }
 
   return (
     <>
-      <div className={styles.main} id="main">
+      <Box ml={"12rem"} mr={"1rem"} pl={"2rem"} id="main">
         <Flex alignItems={"center"} justify={"space-between"}>
-          <h1>{task!.title}</h1>
+          <Text as={"h1"} pt={"1rem"} fontSize={"3rem"} fontWeight={400}>
+            {task!.title}
+          </Text>
           <Flex>
             {isAdmin && (
               <Button as={"a"} href={`/edit/${params.id}`}>
@@ -107,12 +112,20 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
           </Flex>
         </Flex>
         <Text
-          className={classes}
           py={3}
-          borderRadius={5}
+          borderRadius={10}
+          w={"60%"}
+          cursor={"pointer"}
+          color={"rgb(90, 90, 90)"}
+          lineHeight={"1.3rem"}
+          fontWeight={500}
+          letterSpacing={"0.5px"}
+          transition={"0.15s"}
+          _hover={{
+            boxShadow: "0 0 10px 0px rgba(0, 0, 0, 0.08)",
+          }}
+          style={hiddenStyles}
           onClick={() => setHideDesc((state) => !state)}
-          onMouseEnter={() => setShowOutline(true)}
-          onMouseLeave={() => setShowOutline(false)}
           id="description"
           dangerouslySetInnerHTML={{ __html: !hideDesc ? task!.description : task!.description.slice(0, 60) }}
         ></Text>
@@ -122,7 +135,7 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
           </Box>
           <CodeEditor HTMLcode={HTMLcode} setHTMLcode={setHTMLcode} CSScode={CSScode} setCSScode={setCSScode} />
         </div>
-      </div>
+      </Box>
       <VisuallyHiddenInput type="number" name="id" readOnly value={userTaskData?.id} />
       <VisuallyHiddenInput type="number" name="task" readOnly value={params.id} />
       <VisuallyHiddenInput type="text" name="html_code" readOnly value={HTMLcode} />
