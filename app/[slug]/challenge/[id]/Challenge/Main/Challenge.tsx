@@ -82,7 +82,7 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
 
   return (
     <>
-      <Box ml={"12rem"} mr={"1rem"} pl={"2rem"} id="main">
+      <Box ml={"12rem"} mr={"1rem"} pl={"2rem"}>
         <Flex alignItems={"center"} justify={"space-between"}>
           <Text as={"h1"} pt={"1rem"} fontSize={"3rem"} fontWeight={400}>
             {task!.title}

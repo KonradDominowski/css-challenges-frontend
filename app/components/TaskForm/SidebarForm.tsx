@@ -3,9 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
-import { Button, FormLabel, Select, Spinner, Tooltip } from "@chakra-ui/react";
+import { Box, Button, FormLabel, Select, Spinner, Tooltip } from "@chakra-ui/react";
 
-import styles from "./SidebarForm.module.scss";
 
 function range(end: number) {
   if (isNaN(end)) return [1];
@@ -77,7 +76,14 @@ export default function SidebarForm({
   }, [topicID, setChapterID, chapters, task?.order]);
 
   return (
-    <nav className={styles.sidebar}>
+    <Box
+      as="nav"
+      pos={"fixed"}
+      h={"calc(100svh - 4rem)"}
+      w={"12rem"}
+      borderRight={"1px solid rgba(48, 48, 255, 0.2)"}
+      p={"12px"}
+    >
       <FormLabel m={0} mt={2} mr={3} fontWeight={700}>
         Topic
       </FormLabel>
@@ -142,6 +148,6 @@ export default function SidebarForm({
           {pending ? <Spinner size={"sm"} /> : "Save"}
         </Button>
       </Tooltip>
-    </nav>
+    </Box>
   );
 }

@@ -136,7 +136,7 @@ export default function ChallengeForm({
   }
 
   return (
-    <div className={styles.main} id="main">
+    <Box ml={"12rem"} mr={"1rem"} pl={"2rem"}>
       <Flex alignItems={"center"} justify={"left"} pt={4}>
         <Textarea
           name="title"
@@ -250,6 +250,6 @@ export default function ChallengeForm({
         <VisuallyHiddenInput type="text" name="starter_html_code" readOnly value={starterHTMLcode} />
         <VisuallyHiddenInput type="text" name="starter_css_code" readOnly value={starterCSScode} />
       </div>
-    </div>
+    </Box>
   );
 }
