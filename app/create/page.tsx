@@ -4,7 +4,7 @@ import TaskForm from "../components/TaskForm/TaskForm";
 export default async function CreateChallenge() {
   const session = await getServerSession();
 
-  if (!(session?.user?.email === "konrad.dominowski@gmail.com")) {
+  if (session?.user?.email !== "konrad.dominowski@gmail.com") {
     return <p>This page is only available for the admin.</p>;
   }
 

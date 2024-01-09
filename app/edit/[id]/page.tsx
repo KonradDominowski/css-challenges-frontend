@@ -10,10 +10,11 @@ interface Props {
 export default async function CreateChallenge({ params }: Props) {
   const session = await getServerSession();
 
-  if (!(session?.user?.email === "konrad.dominowski@gmail.com")) {
+  if (session?.user?.email !== "konrad.dominowski@gmail.com") {
     return <p>This page is only available for the admin.</p>;
   }
 
+  // TODO - extract fetchin topics and chapters into their own functions
   const topicsResponse = await fetch(`${process.env.BACKEND_URL}/api/topics/`);
   const topics: Topic[] = await topicsResponse.json();
 
