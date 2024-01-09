@@ -1,11 +1,12 @@
 import { getServerSession } from "next-auth/next";
 import type { Metadata } from "next";
-
-import Title from "./components/Title";
 import { Suspense } from "react";
-import { LoadingMainPage } from "./components/Loadings/Index";
+
 import { authOptions } from "./api/auth/[...nextauth]/route";
+import { LoadingMainPage } from "./components/Loadings/Index";
+import Title from "./components/Title";
 import Body from "./components/Body";
+import fetchUserTasks from "@/functions/fetchUserTasks";
 
 export const metadata: Metadata = {
   title: "CSS Challenges",
@@ -34,19 +35,12 @@ async function Main() {
 
   let tasksData;
 
-  if (session) {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/tasks-users/`, {
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-      next: { tags: ["userTasks"] },
-    });
-
-    tasksData = await response.json();
+  if (session?.accessToken) {
+    tasksData = await fetchUserTasks(session.accessToken);
   }
 
   const topicsResponse = await fetch(`${process.env.BACKEND_URL}/api/topics/`, { next: { tags: ["topics"] } });
   const topics = await topicsResponse.json();
 
-  return <Body topics={topics} />;
+  return <Body session={session} topics={topics} tasksData={tasksData} />;
 }

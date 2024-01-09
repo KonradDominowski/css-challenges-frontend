@@ -8,11 +8,13 @@ interface Task {
   updated?: string;
   order: number;
   chapter: number;
+  topic: number;
 }
 
 interface TaskData {
   id?: number;
   user?: number;
+  topic: number;
   task: number;
   html_code: string;
   css_code: string;
