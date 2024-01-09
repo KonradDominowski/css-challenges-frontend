@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { format } from "@projectwallace/format-css";
 import pretty from "pretty";
@@ -19,11 +19,13 @@ import {
   Box,
   IconButton,
   Tooltip,
+  HStack,
 } from "@chakra-ui/react";
 import { EditorView } from "codemirror";
 
 import { JoinIcon, SplitIcon } from "@/app/components/Icons";
 import { GiFairyWand } from "react-icons/gi";
+import { IoArrowUndoOutline, IoArrowUndoSharp } from "react-icons/io5";
 
 interface Props {
   code: string;
@@ -36,6 +38,8 @@ interface JoinedProps {
   CSScode: string;
   setCSScode: React.Dispatch<React.SetStateAction<string>>;
   form?: boolean;
+  starterCode?: string | null;
+  userCode?: string | null;
 }
 
 const myTheme = createTheme({
@@ -104,8 +108,19 @@ function CSSEditor({ code, setCode }: Props) {
   );
 }
 
-export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode, form }: JoinedProps) {
+export default function CodeEditor({
+  HTMLcode,
+  setHTMLcode,
+  CSScode,
+  setCSScode,
+  form,
+  starterCode,
+  userCode,
+}: JoinedProps) {
   const [isSplit, setIsSplit] = useState(true);
+  const [isFormatted, setIsFormatted] = useState(false);
+  const [isUserCode, setIsUserCode] = useState(true);
+  const [isStarterCode, setIsStarterCode] = useState(userCode ? false : true);
 
   const toggleSplit = () => {
     setIsSplit((state) => !state);
@@ -115,6 +130,36 @@ export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode,
     setHTMLcode(pretty(HTMLcode));
     setCSScode(format(CSScode));
   };
+
+  const resetCodeToUserCode = () => {
+    if (userCode) {
+      setCSScode(format(userCode));
+    }
+  };
+
+  const resetCodeToStartedCode = () => {
+    setCSScode(format(starterCode || ""));
+  };
+
+  useEffect(() => {
+    setIsFormatted(format(CSScode) === CSScode);
+  }, [CSScode]);
+
+  useEffect(() => {
+    if (userCode) {
+      setIsUserCode(format(userCode) === format(CSScode));
+    }
+  }, [CSScode, userCode]);
+
+  useEffect(() => {
+    if (starterCode) {
+      setIsStarterCode(format(starterCode) === format(CSScode));
+    } else if (CSScode !== "") {
+      setIsStarterCode(false);
+    } else {
+      setIsStarterCode(true);
+    }
+  }, [CSScode, starterCode]);
 
   const keyboardShortcuts = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.ctrlKey && e.shiftKey && e.key === "F") {
@@ -142,29 +187,52 @@ export default function CodeEditor({ HTMLcode, setHTMLcode, CSScode, setCSScode,
       pos={"relative"}
       onKeyDown={keyboardShortcuts}
     >
-      <Tooltip label={isSplit ? "Join editors" : "Split editors"} fontSize="xs" borderRadius={5}>
-        <IconButton
-          aria-label="Split editors"
-          pos={"absolute"}
-          right={4}
-          top={3}
-          size={"sm"}
-          icon={isSplit ? <JoinIcon /> : <SplitIcon />}
-          onClick={toggleSplit}
-        />
-      </Tooltip>
+      <HStack pos={"absolute"} top={3} right={4}>
+        <Tooltip label="Reset to starter code" fontSize="xs" borderRadius={5}>
+          <IconButton
+            aria-label="Go back to your code"
+            isDisabled={isStarterCode}
+            size={"sm"}
+            icon={<IoArrowUndoSharp />}
+            onClick={resetCodeToStartedCode}
+          />
+        </Tooltip>
 
-      <Tooltip label="Press Ctrl + Shift + F to format code" fontSize="xs" borderRadius={5}>
-        <IconButton
-          aria-label="Split editors"
-          pos={"absolute"}
-          right={14}
-          top={3}
-          size={"sm"}
-          icon={<GiFairyWand />}
-          onClick={formatCode}
-        />
-      </Tooltip>
+        {userCode && (
+          <Tooltip label="Reset to your solution" fontSize="xs" borderRadius={5}>
+            <IconButton
+              aria-label="Reset code"
+              isDisabled={isUserCode}
+              size={"sm"}
+              icon={<IoArrowUndoOutline />}
+              onClick={resetCodeToUserCode}
+            />
+          </Tooltip>
+        )}
+
+        <Tooltip
+          label={isFormatted ? "Your code is properly formatted" : "Press Ctrl + Shift + F to format code"}
+          fontSize="xs"
+          borderRadius={5}
+        >
+          <IconButton
+            aria-label="Format code"
+            isDisabled={isFormatted}
+            size={"sm"}
+            icon={<GiFairyWand />}
+            onClick={formatCode}
+          />
+        </Tooltip>
+
+        <Tooltip label={isSplit ? "Join editors" : "Split editors"} fontSize="xs" borderRadius={5}>
+          <IconButton
+            aria-label="Split editors"
+            size={"sm"}
+            icon={isSplit ? <JoinIcon /> : <SplitIcon />}
+            onClick={toggleSplit}
+          />
+        </Tooltip>
+      </HStack>
 
       {!isSplit ? (
         <Tabs variant={"unstyled"}>
