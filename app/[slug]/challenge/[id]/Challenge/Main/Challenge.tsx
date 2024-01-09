@@ -9,7 +9,6 @@ import CodeEditor from "@/app/components/Editors";
 import TargetAndOutput from "@/app/components/TargetAndOutput";
 import { SubmitButton } from "@/app/components/Buttons";
 
-import styles from "./Challenge.module.scss";
 import { useSession } from "next-auth/react";
 
 interface Props {
@@ -133,7 +132,14 @@ export default function Challenge({ params, topic, userTaskData }: Props) {
           <Box mb={4} minW={"600px"} maxW={"100%"} resize={"horizontal"} overflow={"auto"}>
             <TargetAndOutput target={task!.target} output={srcDoc} />
           </Box>
-          <CodeEditor HTMLcode={HTMLcode} setHTMLcode={setHTMLcode} CSScode={CSScode} setCSScode={setCSScode} />
+          <CodeEditor
+            HTMLcode={HTMLcode}
+            setHTMLcode={setHTMLcode}
+            CSScode={CSScode}
+            setCSScode={setCSScode}
+            starterCode={task?.starter_css_code}
+            userCode={userTaskData?.css_code}
+          />
         </div>
       </Box>
       <VisuallyHiddenInput type="number" name="id" readOnly value={userTaskData?.id} />
