@@ -5,6 +5,7 @@ import ChallengePage from "@/app/[slug]/challenge/[id]/Challenge/ChallengePage";
 import { Suspense } from "react";
 import LoadingChallenge from "@/app/components/Loadings/Challenge";
 import fetchTopic from "@/functions/fetchTopic";
+import fetchUserTasks from "@/functions/fetchUserTasks";
 
 interface Props {
   params: {
@@ -27,15 +28,8 @@ async function ChallengeLayout({ params }: Props) {
 
   let tasksData: TaskData[] | undefined = undefined;
 
-  if (session) {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/tasks-users/`, {
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-      next: { tags: ["userTasks"] },
-    });
-
-    tasksData = await response.json();
+  if (session?.accessToken) {
+    tasksData = await fetchUserTasks(session.accessToken);
   }
 
   const topic = await fetchTopic(params.slug);

@@ -1,7 +1,7 @@
 "use server";
 
 import { encodeWithCodeblocks } from "@/functions/editingCode";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export default async function createTask(formData: FormData, options: { taskID?: number }) {
   const { taskID } = options;
@@ -29,6 +29,7 @@ export default async function createTask(formData: FormData, options: { taskID?:
 
     if (!response.ok) throw new Error();
     revalidatePath("/create");
+    revalidateTag("topic");
     const resData = await response.json();
 
     return { message: "Success!", status: "success", taskID: resData.id };

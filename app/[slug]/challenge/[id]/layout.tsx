@@ -1,6 +1,7 @@
 import Sidebar from "./Challenge/Sidebar/Sidebar";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import fetchTopic from "@/functions/fetchTopic";
+import fetchUserTasks from "@/functions/fetchUserTasks";
 import { getServerSession } from "next-auth";
 
 interface Props {
@@ -16,15 +17,8 @@ export default async function layout({ children, params }: Props) {
 
   let tasksData: TaskData[] | undefined = undefined;
 
-  if (session) {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/tasks-users/`, {
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-      next: { tags: ["userTasks"] },
-    });
-
-    tasksData = await response.json();
+  if (session?.accessToken) {
+    tasksData = await fetchUserTasks(session.accessToken);
   }
 
   const topic = await fetchTopic(params.slug);
