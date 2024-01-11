@@ -29,6 +29,7 @@ export default function ChallengePage({ params, topic, tasksData, session }: Pro
     if (data.id) {
       optimisticTask = {
         id: +data.id,
+        topic: +data.topic,
         task: +data.task,
         html_code: data.html_code.toString(),
         css_code: data.css_code.toString(),
@@ -40,6 +41,7 @@ export default function ChallengePage({ params, topic, tasksData, session }: Pro
     } else {
       optimisticTask = {
         task: +data.task,
+        topic: +data.topic,
         html_code: data.html_code.toString(),
         css_code: data.css_code.toString(),
         completed: true,

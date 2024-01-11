@@ -1,5 +1,7 @@
 import { getServerSession } from "next-auth";
 import TaskForm from "@/app/components/TaskForm/TaskForm";
+import fetchAllTopics from "@/functions/fetchAllTopics";
+import fetchChapters from "@/functions/fetchChapters";
 
 interface Props {
   params: {
@@ -14,12 +16,8 @@ export default async function CreateChallenge({ params }: Props) {
     return <p>This page is only available for the admin.</p>;
   }
 
-  // TODO - extract fetchin topics and chapters into their own functions
-  const topicsResponse = await fetch(`${process.env.BACKEND_URL}/api/topics/`);
-  const topics: Topic[] = await topicsResponse.json();
-
-  const chaptersResponse = await fetch(`${process.env.BACKEND_URL}/api/chapters/`);
-  const chapters: Chapter[] = await chaptersResponse.json();
+  const topics: Topic[] = await fetchAllTopics();
+  const chapters: Chapter[] = await fetchChapters();
 
   const taskResponse = await fetch(`${process.env.BACKEND_URL}/api/tasks/${params.id}/`);
   const task: Task = await taskResponse.json();

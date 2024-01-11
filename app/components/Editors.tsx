@@ -108,6 +108,7 @@ function CSSEditor({ code, setCode }: Props) {
   );
 }
 
+// TODO - Find different HTML formatter
 export default function CodeEditor({
   HTMLcode,
   setHTMLcode,
