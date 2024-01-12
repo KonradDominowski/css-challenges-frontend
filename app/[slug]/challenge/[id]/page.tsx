@@ -1,8 +1,9 @@
-import { getServerSession } from "next-auth/next";
+import { Metadata } from "next";
+import { Suspense } from "react";
 
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ChallengePage from "@/app/[slug]/challenge/[id]/Challenge/ChallengePage";
-import { Suspense } from "react";
 import LoadingChallenge from "@/app/components/Loadings/Challenge";
 import fetchTopic from "@/functions/fetchTopic";
 import fetchUserTasks from "@/functions/fetchUserTasks";
@@ -14,7 +15,16 @@ interface Props {
   };
 }
 
-// TODO - generate metadata: page title dynamically
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const topic: Topic = await fetchTopic(params.slug);
+
+  const task = topic.chapters!.flatMap((chapter) => chapter.tasks).find((task) => task.id === +params.id)!;
+
+  return {
+    title: `${task.title} - ${topic.title}`,
+  };
+}
+
 export default function Challenge({ params }: Props) {
   return (
     <Suspense fallback={<LoadingChallenge />}>

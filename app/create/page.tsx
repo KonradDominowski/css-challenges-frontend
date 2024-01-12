@@ -2,6 +2,11 @@ import { getServerSession } from "next-auth";
 import TaskForm from "../components/TaskForm/TaskForm";
 import fetchAllTopics from "@/functions/fetchAllTopics";
 import fetchChapters from "@/functions/fetchChapters";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Create new task - CSS Challenges",
+};
 
 export default async function CreateChallenge() {
   const session = await getServerSession();

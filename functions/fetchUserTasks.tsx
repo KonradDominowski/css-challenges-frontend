@@ -4,8 +4,8 @@ export default async function fetchUserTasks(accessToken: string) {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      next: { tags: ["userTasks"] },
       cache: "force-cache",
+      next: { tags: ["userTasks"] },
     });
     return await response.json();
   } catch (err) {}

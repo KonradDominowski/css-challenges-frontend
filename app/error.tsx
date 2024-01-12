@@ -1,21 +1,11 @@
 "use client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
-import { Flex, IconButton } from "@chakra-ui/react";
-import { AiOutlineReload } from "react-icons/ai";
+import { Flex } from "@chakra-ui/react";
 
 import Title from "./components/Title";
-import revalidateData from "./actions";
 
 export default function ErrorPage({ error, reset }: { error: Error; reset: () => void }) {
-  const router = useRouter();
-
-  const refetchTopics = async () => {
-    // TODO - maybe there is better way to revalidate this path
-    await revalidateData();
-  };
-
   let err;
   if (error.message === "fetch failed") {
     err = (
@@ -28,9 +18,6 @@ export default function ErrorPage({ error, reset }: { error: Error; reset: () =>
           style={{ transform: "translate(3px)" }}
         />
         <strong>Database connection error, try refreshing the page</strong>
-        {/* <form action={refetchTopics}>
-          <IconButton type="submit" colorScheme="teal" aria-label="Reload button" icon={<AiOutlineReload />} />
-        </form> */}
       </>
     );
   } else {
