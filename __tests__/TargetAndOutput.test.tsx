@@ -11,6 +11,46 @@ it("should render to the screen", () => {
   expect(targetAndOutput).toBeInTheDocument();
 });
 
+it("should display correct target", () => {
+  const exampleTarget = `<html lang=&quot;en&quot;>
+  <body><h1>Hello world</h1></body>
+  <style>
+  body {
+    background-color: white
+  }
+  h1 {
+color: red;
+}</style>
+</html>
+`;
+
+  render(<TargetAndOutput target={exampleTarget} output="" />);
+
+  const targetIFrame = screen.getByTestId("targetiframe");
+
+  expect(targetIFrame.getAttribute("srcdoc")).toEqual(exampleTarget);
+});
+
+it("should display correct output", () => {
+  const exampleOutput = `<html lang=&quot;en&quot;>
+  <body><h1>Hello world</h1></body>
+  <style>
+  body {
+    background-color: white
+  }
+  h1 {
+color: red;
+}</style>
+</html>
+`;
+
+  render(<TargetAndOutput target="" output={exampleOutput} />);
+
+  const outputIFrame = screen.getByTestId("outputiframe");
+
+  expect(outputIFrame.getAttribute("srcdoc")).toEqual(exampleOutput);
+});
+
 it("should display output tab as default", () => {
   render(<TargetAndOutput target="" output="" />);
 
