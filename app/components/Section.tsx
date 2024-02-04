@@ -28,7 +28,17 @@ export default function Section({ topic, session, userTasks }: Props) {
       href={slug}
       className={`${styles.section} ${!is_ready ? styles.disabled : ""} ${completed ? styles.completed : ""}`}
     >
-      {completed && <Icon as={FaCheckCircle} boxSize={8} color={"green.400"} pos={"absolute"} top={3} right={3} />}
+      {completed && (
+        <Icon
+          as={FaCheckCircle}
+          boxSize={8}
+          color={"green.400"}
+          pos={"absolute"}
+          top={3}
+          right={3}
+          data-testid="completed"
+        />
+      )}
       <Image src={logo_url} alt={"logo"} height={200} width={200} />
       <h2>{title}</h2>
       <span>{short_description}</span>
