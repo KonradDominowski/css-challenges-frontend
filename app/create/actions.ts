@@ -8,7 +8,7 @@ export default async function createTask(formData: FormData, options: { taskID?:
   const data = Object.fromEntries(formData);
   data.description = encodeWithCodeblocks(data.description as string);
 
-  let url: string, method: string;
+  let url: string, method: "put" | "post";
 
   if (taskID) {
     url = `${process.env.BACKEND_URL}/api/tasks/${taskID}/`;
