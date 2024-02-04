@@ -17,7 +17,7 @@ export default function TargetAndOutput({ target, output }: { target: string; ou
   const [showDiff, setShowDiff] = useState(false);
 
   return (
-    <Flex gap={4} my={3} flexDirection={{ base: "column-reverse", lg: "row" }}>
+    <Flex data-testid="target-and-output" gap={4} my={3} flexDirection={{ base: "column-reverse", lg: "row" }}>
       <Card px={5} flexGrow={1} pb={5}>
         <Tabs>
           <CardHeader color={"gray"} p={0}>
@@ -32,7 +32,7 @@ export default function TargetAndOutput({ target, output }: { target: string; ou
             </TabList>
           </CardHeader>
           <TabPanels>
-            <TabPanel p={0} position={"relative"}>
+            <TabPanel p={0} position={"relative"} data-testid="tab-output">
               <Box
                 position={"absolute"}
                 w={"100%"}
@@ -40,6 +40,7 @@ export default function TargetAndOutput({ target, output }: { target: string; ou
                 left={0}
                 display={showDiff ? "block" : "none"}
                 mixBlendMode={"difference"}
+                data-testid="tab-compare"
               >
                 <iframe title="target" height={300} sandbox="allow-scripts" width="100%" srcDoc={target} />
               </Box>
@@ -47,7 +48,7 @@ export default function TargetAndOutput({ target, output }: { target: string; ou
                 <iframe title="output" height={300} sandbox="allow-scripts" width="100%" srcDoc={output} />
               </Box>
             </TabPanel>
-            <TabPanel p={0}>
+            <TabPanel p={0} data-testid="tab-target">
               <iframe title="target" height={300} sandbox="allow-scripts" width="100%" srcDoc={target} />
             </TabPanel>
           </TabPanels>
