@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import Section from "@/app/components/Section";
-import { mockSession, mockTopic, mockTopic2, mockUserTask1, mockUserTask2 } from "@/__test_mocks__/mocks";
+import { mockSessionAuthorized, mockTopic, mockTopic2, mockUserTask1, mockUserTask2 } from "@/__test_mocks__/mocks";
 
 it("should render to the screen", () => {
   render(<Section session={null} topic={mockTopic} userTasks={undefined} />);
@@ -32,7 +32,7 @@ it("should display correct info", () => {
 });
 
 it("should be styled if all exercises are completed by user", () => {
-  render(<Section session={mockSession} topic={mockTopic} userTasks={[mockUserTask1, mockUserTask2]} />);
+  render(<Section session={mockSessionAuthorized} topic={mockTopic} userTasks={[mockUserTask1, mockUserTask2]} />);
 
   const checkmark = screen.getByTestId("completed");
   expect(checkmark).toBeInTheDocument();

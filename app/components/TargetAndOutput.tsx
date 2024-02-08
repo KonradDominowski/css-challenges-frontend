@@ -45,7 +45,14 @@ export default function TargetAndOutput({ target, output }: { target: string; ou
                 <iframe title="target" height={300} sandbox="allow-scripts" width="100%" srcDoc={target} />
               </Box>
               <Box>
-                <iframe title="output" height={300} sandbox="allow-scripts" width="100%" srcDoc={output} />
+                <iframe
+                  title="output"
+                  height={300}
+                  sandbox="allow-scripts"
+                  width="100%"
+                  srcDoc={output}
+                  data-testid="outputiframe"
+                />
               </Box>
             </TabPanel>
             <TabPanel p={0} data-testid="tab-target">
@@ -59,7 +66,14 @@ export default function TargetAndOutput({ target, output }: { target: string; ou
           Target
         </CardHeader>
         <Divider color={"gray.200"} />
-        <iframe id="target" title="target" height={300} sandbox="allow-scripts " srcDoc={target} />
+        <iframe
+          id="target"
+          title="target"
+          height={300}
+          sandbox="allow-scripts "
+          srcDoc={target}
+          data-testid="targetiframe"
+        />
       </Card>
     </Flex>
   );

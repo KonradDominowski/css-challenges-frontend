@@ -10,13 +10,13 @@ export function SignInButton() {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return <Spinner size={"sm"} />;
+    return <Spinner data-testid="sign-in-button-spinner" size={"sm"} />;
   }
 
   if (status === "authenticated") {
     return (
-      <Link href={`/dashboard`}>
-        <Avatar name={session.user?.image!} src={session.user?.image!} size={"sm"} />
+      <Link data-testid="dashboard-link" href={`/dashboard`}>
+        <Avatar data-testid="user-avatar" name={session.user?.image!} src={session.user?.image!} size={"sm"} />
       </Link>
     );
   }
@@ -33,10 +33,10 @@ export function SubmitButton({ completed }: { completed: boolean | undefined }) 
 
   return (
     <>
-      <Button isLoading={pending} colorScheme="green" type="submit" isDisabled={pending}>
+      <Button data-testid="submit-button" isLoading={pending} colorScheme="green" type="submit" isDisabled={pending}>
         {completed ? (
           <>
-            <Icon as={HiCheck} mr={1} />
+            <Icon data-testid="checkmark" as={HiCheck} mr={1} />
             Done
           </>
         ) : (
