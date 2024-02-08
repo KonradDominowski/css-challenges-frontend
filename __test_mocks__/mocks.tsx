@@ -1,8 +1,8 @@
 import { Session } from "next-auth";
 
-export const mockSession: Session = {
+export const mockSessionAuthorized: Session = {
   expires: new Date(Date.now() + 2 * 86400).toISOString(),
-  user: { name: "admin", email: "admin@admin.admin" },
+  user: { name: "admin", email: "admin@admin.admin", image: "https://placehold.co/50x50/jpg" },
 };
 
 export const mockTask1: Task = {
