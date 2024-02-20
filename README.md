@@ -1,5 +1,1 @@
-## Libaries
-
-**CSS** - [@projectwallace/format-css](https://www.npmjs.com/package/@projectwallace/format-css)
-
-**HTML** - [pretty](https://www.npmjs.com/package/pretty)
+Check out the website [online hosted on Vercel](https://csschallenges.vercel.app/)
