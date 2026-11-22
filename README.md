@@ -17,3 +17,5 @@ https://css-challenges-delta.vercel.app/api/tasks-users/ # Task details related 
 Explore the admin page:
 
 https://css-challenges-delta.vercel.app/admin
+login: guest
+password: explore2025
